@@ -39,7 +39,7 @@ int changeTabuleiro(int xlenght ,int ylenght,int tab[xlenght][ylenght], int xPos
 int checkForWinner(int xlenght ,int ylenght,int tab[xlenght][ylenght]){
     int equal_straight=0, last_equal;
     //horizontal
-    for(int y=0;y<ylenght;y++){
+/*     for(int y=0;y<ylenght;y++){
         if(tab[y][0]!=0){
             last_equal=tab[y][0];
 
@@ -83,20 +83,49 @@ int checkForWinner(int xlenght ,int ylenght,int tab[xlenght][ylenght]){
             equal_straight=0;
         }
         }        
+    } */
+
+    //diagonal esquerda p direita
+    if(tab[0][0]!=0){
+        equal_straight=0;
+        last_equal=tab[0][0];
+        if(xlenght==ylenght){
+            for(int i=1;i<xlenght;i++){
+                if(tab[i][i]==last_equal){
+                    equal_straight++;
+                }
+            }
+            if(equal_straight==xlenght-1){
+                printf("WINNER");
+            }
+        }
     }
 
-    //diagonal
-    
+    //diagonal direita p esquerda
+    if(tab[0][xlenght-1]!=0){
+        equal_straight=0;
+        last_equal=tab[0][xlenght-1];
+        if(xlenght==ylenght){
+            for(int x=xlenght-2, y=1 ;x>=0; x--,y++){
+                if(tab[y][x]==last_equal){
+                    equal_straight++;
+                }
+            }
+            if(equal_straight==xlenght-1){
+                printf("WINNER");
+            }
+        }
+    }
 }
 
 void main(){
     //int tabuleiro[4][4] = {0};
 
-    int tabuleiro[4][4] = {{3,2,2,2},
-                           {2,3,2,2},
-                           {1,1,3,0},
-                           {2,2,0,3}
-                            };
+    int tabuleiro[4][4] = {{1,2,2,2},
+                           {2,0,2,2},
+                           {1,2,1,0},
+                           {2,2,0,1}
+                           };
 
     //printTabuleiro(4,4,tabuleiro);
     //changeTabuleiro(4,4,tabuleiro,1,3);
