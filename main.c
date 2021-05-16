@@ -38,7 +38,7 @@ void printTabuleiro(int ylenght ,int xlenght,int **tab){
 
 }
 
-int changeTabuleiro(int xlenght ,int ylenght,int tab[xlenght][ylenght], int xPosition, int yPosition){
+int changeTabuleiro(int xlenght ,int ylenght,int **tab, int xPosition, int yPosition){
     if(xPosition>xlenght || yPosition>ylenght || xPosition<0 || yPosition<0){
         printf("Posicao Invalida");
         return 0;
@@ -62,7 +62,7 @@ int changeTabuleiro(int xlenght ,int ylenght,int tab[xlenght][ylenght], int xPos
     }
 }
 
-int checkForWinner(int xlenght ,int ylenght,int tab[ylenght][xlenght]){
+int checkForWinner(int xlenght ,int ylenght,int **tab){
     int equal_straight=0, last_equal;
     //horizontal
     for(int y=0;y<ylenght;y++){
@@ -150,9 +150,26 @@ void GetInput(int *xPosition, int *yPosition, char current_player){
     scanf("%d %d",xPosition,yPosition);
 }
 
-/* void Add(int ylenght ,int xlenght,int tab[ylenght][xlenght],){
-
-} */
+int Add(int **tab, char LorC, int *c, int *l){
+    if(LorC=='C'){
+        *tab = realloc(tab,sizeof(int*)*((*c)+1));
+        if(tab==NULL){
+            printf("ERROR ALOCATING MEMORY");
+            return 0;
+        }
+        (*c)++;
+        return 1;
+    }
+    else if(LorC=='L'){
+        *tab = realloc(tab,sizeof(int*)*((*c)+1));
+        if(tab==NULL){
+            printf("ERROR ALOCATING MEMORY");
+            return 0;
+        }
+        (*c)++;
+        return 1;
+    }
+}
 
 void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
     for(int i=0;i<xlenght;i++){
@@ -164,15 +181,19 @@ void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
 
 void main(){
     
-    int c=4, l=4;
+    int ylenght=4, xlenght=4;
     int **tabuleiro;
 
-    tabuleiro = malloc(sizeof(int*)*c);
-    for(int i=0;i<c;i++){
-        tabuleiro[i]=malloc(sizeof(int)*l);
+    tabuleiro = malloc(sizeof(int*)*ylenght);
+    if(tabuleiro==NULL){
+        printf("ERRO NA ALOCACAO DE MEMORIA");
     }
-
-    //int tabuleiro[4][4] = {0};
+    for(int i=0;i<ylenght;i++){
+        tabuleiro[i]=malloc(sizeof(int)*xlenght);
+        if(tabuleiro[i]==NULL){
+            printf("ERRO NA ALOCACAO DE MEMORIA");
+        }
+    }
 
     /* int tabuleiro[4][4] = {{1,2,2,2},
                            {2,0,2,2},
@@ -184,8 +205,9 @@ void main(){
     int playing = 1;
     int xPosition, yPosition;
 
-    InicializaTabuleiro(l,c,tabuleiro);
-    printTabuleiro(l,c,tabuleiro);
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    printTabuleiro(ylenght,xlenght,tabuleiro);
+
     //changeTabuleiro(4,4,tabuleiro,1,3);
     //checkForWinner(4,4,tabuleiro);
     //GetInput(&xPosition,&yPosition,current_player);
