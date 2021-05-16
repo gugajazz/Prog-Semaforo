@@ -1,14 +1,40 @@
 //Gustavo Mateus 2020138902
 #include <stdio.h>
+#include <stdlib.h>
 
-void printTabuleiro(int xlenght ,int ylenght,int tab[xlenght][ylenght]){
-    for(int x=0;x<xlenght;x++){
-        for(int y=0;y<ylenght;y++){
-            printf("%d ",tab[x][y]);
+void printTabuleiro(int ylenght ,int xlenght,int tab[ylenght][xlenght]){
+
+    for(int i=0;i<xlenght;i++){
+        if(i==0){
+            printf("      x%d",i);
+        }
+        else{
+            printf("   x%d",i);
+        }
+    }
+
+    printf("\n     ");
+        for(int i=0;i<xlenght*5;i++){
+            printf("-");
+        }
+        printf("\n");
+
+    for(int y=0;y<ylenght;y++){
+        for(int x=0;x<xlenght;x++){
+            if(x==0){
+                printf("y%d  | ",y);
+            }
+            printf(" %d | ",tab[y][x]);
+        }
+
+        printf("\n     ");
+        for(int i=0;i<xlenght*5;i++){
+            printf("-");
         }
         printf("\n");
     }
-    printf("\n------------------------\n\n");
+    printf("\n");
+    //printf("\n------------------------\n\n");
 
 }
 
@@ -36,10 +62,10 @@ int changeTabuleiro(int xlenght ,int ylenght,int tab[xlenght][ylenght], int xPos
     }
 }
 
-int checkForWinner(int xlenght ,int ylenght,int tab[xlenght][ylenght]){
+int checkForWinner(int xlenght ,int ylenght,int tab[ylenght][xlenght]){
     int equal_straight=0, last_equal;
     //horizontal
-/*     for(int y=0;y<ylenght;y++){
+    for(int y=0;y<ylenght;y++){
         if(tab[y][0]!=0){
             last_equal=tab[y][0];
 
@@ -83,7 +109,7 @@ int checkForWinner(int xlenght ,int ylenght,int tab[xlenght][ylenght]){
             equal_straight=0;
         }
         }        
-    } */
+    }
 
     //diagonal esquerda p direita
     if(tab[0][0]!=0){
@@ -118,17 +144,38 @@ int checkForWinner(int xlenght ,int ylenght,int tab[xlenght][ylenght]){
     }
 }
 
-void main(){
-    //int tabuleiro[4][4] = {0};
+void GetInput(int *xPosition, int *yPosition, char current_player){
+    printf("Vez do jogador %c\n",current_player);
+    printf("Escolha a posicao em que quer jogar (x y): ");
+    scanf("%d %d",xPosition,yPosition);
+}
 
-    int tabuleiro[4][4] = {{1,2,2,2},
+void Add(int ylenght ,int xlenght,int tab[ylenght][xlenght],){
+
+}
+
+void main(){
+    int tabuleiro[][] = *malloc(sizeof(int)*16);
+    int tabuleiro[4][4] = {0};
+
+    /* int tabuleiro[4][4] = {{1,2,2,2},
                            {2,0,2,2},
                            {1,2,1,0},
                            {2,2,0,1}
-                           };
+                           }; */
+    
+    char current_player='A';
+    int playing = 1;
+    int xPosition, yPosition;
 
-    //printTabuleiro(4,4,tabuleiro);
+    printTabuleiro(4,4,tabuleiro);
     //changeTabuleiro(4,4,tabuleiro,1,3);
-    //printTabuleiro(4,4,tabuleiro);
-    checkForWinner(4,4,tabuleiro);
+    //checkForWinner(4,4,tabuleiro);
+    //GetInput(&xPosition,&yPosition,current_player);
+    //printf("%d %d",xPosition,yPosition,current_player);
+    /* while(playing){
+        printTabuleiro(4,4,tabuleiro);
+
+    } */
+
 }
