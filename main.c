@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void printTabuleiro(int ylenght ,int xlenght,int tab[ylenght][xlenght]){
+void printTabuleiro(int ylenght ,int xlenght,int **tab){
 
     for(int i=0;i<xlenght;i++){
         if(i==0){
@@ -150,13 +150,29 @@ void GetInput(int *xPosition, int *yPosition, char current_player){
     scanf("%d %d",xPosition,yPosition);
 }
 
-void Add(int ylenght ,int xlenght,int tab[ylenght][xlenght],){
+/* void Add(int ylenght ,int xlenght,int tab[ylenght][xlenght],){
 
+} */
+
+void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
+    for(int i=0;i<xlenght;i++){
+        for(int j=0;j<ylenght;j++){
+            tab[j][i]=0;
+        }
+    }
 }
 
 void main(){
-    int tabuleiro[][] = *malloc(sizeof(int)*16);
-    int tabuleiro[4][4] = {0};
+    
+    int c=4, l=4;
+    int **tabuleiro;
+
+    tabuleiro = malloc(sizeof(int*)*c);
+    for(int i=0;i<c;i++){
+        tabuleiro[i]=malloc(sizeof(int)*l);
+    }
+
+    //int tabuleiro[4][4] = {0};
 
     /* int tabuleiro[4][4] = {{1,2,2,2},
                            {2,0,2,2},
@@ -168,7 +184,8 @@ void main(){
     int playing = 1;
     int xPosition, yPosition;
 
-    printTabuleiro(4,4,tabuleiro);
+    InicializaTabuleiro(l,c,tabuleiro);
+    printTabuleiro(l,c,tabuleiro);
     //changeTabuleiro(4,4,tabuleiro,1,3);
     //checkForWinner(4,4,tabuleiro);
     //GetInput(&xPosition,&yPosition,current_player);
