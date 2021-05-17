@@ -190,9 +190,6 @@ void ChangeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
     else{
         printf("MODO DESCONHECIDO");
     }
-
-    tabuleiro[4][1]=4;
-    printf("****%d****",tabuleiro[4][1]);
 }
 
 int main(){
@@ -214,32 +211,7 @@ int main(){
     
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro);
-    
-    //add ylenght
-    /* int **tmp = realloc( tabuleiro, sizeof *tabuleiro * (ylenght + 1) );
-    if ( tmp )
-    {
-    tabuleiro = tmp;
-    tabuleiro[ylenght] = malloc( sizeof *tabuleiro[ylenght] * xlenght );
-    }
-    ylenght++;
- */
-    //add xlenght
-    /* for ( size_t i = 0; i < ylenght; i++ )
-    {
-    int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * (xlenght + 1) );
-    if ( tmp )
-    {
-        tabuleiro[i] = tmp;
-    } 
-    }
-    xlenght++; */ 
-
-    ChangeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    printf("asasas");
-    //tabuleiro[4][1]=7;
-    //printf("****%d****",tabuleiro[4][1]);
-    //ylenght++;
+    ChangeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro);
 
