@@ -160,8 +160,8 @@ void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
     }
 }
 
-void ChangeTabuleiro(int ylenght ,int xlenght,int **tabuleiro, char mode){
-    /* if(mode=='X'){
+void ChangeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
+    if(mode=='X'){
         //more xlenght
         for ( size_t i = 0; i < (*ylenght); i++ )
         {
@@ -172,32 +172,27 @@ void ChangeTabuleiro(int ylenght ,int xlenght,int **tabuleiro, char mode){
         } 
         }
         (*xlenght)++; 
-    } */
+    }
     
-    /* else  */if(mode=='Y'){
+    else if(mode=='Y'){
         //more ylenght
-        int **tmp = realloc(tabuleiro, sizeof(int*)*(ylenght + 1));
-        if ( tmp )
-        {
-        tabuleiro = tmp;
-        tabuleiro[ylenght] = malloc( sizeof(int)* xlenght );
+        int **tmp = realloc( tabuleiro, ((*ylenght)+1) );
+        if( tmp ){
+            tabuleiro = tmp;
+            tabuleiro[(*ylenght)] = malloc( sizeof(int) * ((*xlenght)+1) );
         }
-        ylenght++;
-        /* int **tmp = realloc( tabuleiro, sizeof *tabuleiro * ((*ylenght) + 1) );
-        if ( tmp )
-        {
-        tabuleiro = tmp;
-        for ( size_t i = 0; i < 1; i++ )
-        {
-            tabuleiro[(*ylenght) + i] = malloc( sizeof *tabuleiro[(*ylenght) + i] * (*xlenght) );
+        else{
+            printf("PUTAAA");
         }
-        }
-        (*ylenght)++;  */
+        (*ylenght)++;
     }
 
     else{
         printf("MODO DESCONHECIDO");
     }
+
+    tabuleiro[4][1]=4;
+    printf("****%d****",tabuleiro[4][1]);
 }
 
 int main(){
@@ -227,8 +222,8 @@ int main(){
     tabuleiro = tmp;
     tabuleiro[ylenght] = malloc( sizeof *tabuleiro[ylenght] * xlenght );
     }
-    ylenght++; */
-
+    ylenght++;
+ */
     //add xlenght
     /* for ( size_t i = 0; i < ylenght; i++ )
     {
@@ -240,8 +235,11 @@ int main(){
     }
     xlenght++; */ 
 
-    ChangeTabuleiro(ylenght,xlenght,tabuleiro,'Y');
-    ylenght++;
+    ChangeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    printf("asasas");
+    //tabuleiro[4][1]=7;
+    //printf("****%d****",tabuleiro[4][1]);
+    //ylenght++;
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro);
 
