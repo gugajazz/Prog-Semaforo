@@ -37,22 +37,30 @@ void printTabuleiro(int ylenght ,int xlenght,int **tab){
     //printf("\n------------------------\n\n");
 }
 
-int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition){
+int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra){
+    if(pedra==1){
+        if(tabuleiro[xPosition][yPosition]==4){
+            printf("Ja exite uma pedra nessa posicao\n");
+            return 1;
+        }
+        tabuleiro[xPosition][yPosition]=4;
+        return 0;
+    }
     if(tabuleiro[xPosition][yPosition]==0){
         tabuleiro[xPosition][yPosition]=1;
-        return 1;
+        return 0;
     }
     else if(tabuleiro[xPosition][yPosition]==1){
         tabuleiro[xPosition][yPosition]=2;
-        return 1;
+        return 0;
     }
     else if(tabuleiro[xPosition][yPosition]==2){
         tabuleiro[xPosition][yPosition]=3;
-        return 1;
+        return 0;
     }
     else{
         printf("Posicao Invalida\n");
-        return 0;
+        return 1;
     }
 }
 
@@ -137,6 +145,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
             if(equal_straight==xlenght-1){
                 printTabuleiro(xlenght,ylenght,tabuleiro);
                 printf("PLAYER %c IS THE WINNER\n",*current_player);
+                return 0;
             }
         }
     }
@@ -148,35 +157,6 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
         *current_player='A';
     }
     return 1;
-}
-
-int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro, int xlenght, int ylenght){
-    printf("Vez do jogador %c\n",current_player);
-    printf("Escolha a posicao em que quer jogar (y x): ");
-    scanf("%d %d",xPosition,yPosition);
-
-    if(*xPosition>=xlenght || *yPosition>=ylenght || *xPosition<0 || *yPosition<0){ /*|| *xPosition<0 || *yPosition<0*/
-        printf("Posicao Invalida\n");
-        return 0;
-    }
-
-    changeTabuleiro(tabuleiro,*xPosition,*yPosition);
-    return 1;
-}
-
-void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
-    //printf("ylenght=%d xlenght=%d\n",ylenght,xlenght);
-    for(int i=0;i<ylenght;i++){
-        for(int j=0;j<xlenght;j++){
-            //printf("%d %d\n",i,j);
-            tab[i][j]=0;
-        }
-        //printf("\n");
-    }
-}
-
-void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
-    //TO BE CONTINUED
 }
 
 void ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
@@ -220,9 +200,86 @@ void ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
     }
 }
 
+int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro, int xlenght, int ylenght){
+    char escolha, escolhaResize;
+    int loop_escolha=1, loop_resize=1, loop_jogar=1, loop_changeTabuleiro=1;
+    printf("Vez do jogador %c\n",current_player);
+    while(loop_escolha){
+        printf("\nPretende colocar uma pedra (P), aumentar o tabuleiro (A) ou jogar(J)?:");
+        fflush(stdin);
+        scanf("%c",&escolha);
+        if(escolha=='P' || escolha=='A' || escolha=='J'){
+            loop_escolha=0;
+        }
+        else{
+            printf("Escolha apenas entre P, A ou J");
+        }
+    }
+
+    if(escolha=='P'){
+        loop_changeTabuleiro=1;
+        while(loop_changeTabuleiro){
+            printf("Escolha a posicao da pedra (y x): ");
+            fflush(stdin);
+            scanf("%d %d",xPosition,yPosition);
+
+            if(*xPosition>=xlenght || *yPosition>=ylenght || *xPosition<0 || *yPosition<0){
+                printf("Posicao Invalida\n");
+                return 1;
+            }
+            loop_changeTabuleiro = changeTabuleiro(tabuleiro,*xPosition,*yPosition,1);
+        }
+        return 0;
+    }
+    else if(escolha=='A'){
+        while(escolhaResize!='L' || escolhaResize!='C'){
+            printf("Pretende aumentar uma linha (L) ou coluna (C)?:");
+            fflush(stdin);
+            scanf("%c",&escolhaResize);
+            if(escolhaResize=='L'){
+                ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
+            }
+            else if(escolhaResize=='C'){
+                ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+            }
+            
+        }
+        
+    }
+    else{
+        printf("Escolha a posicao em que quer jogar (y x): ");
+        fflush(stdin);
+        scanf("%d %d",xPosition,yPosition);
+
+        if(*xPosition>=xlenght || *yPosition>=ylenght || *xPosition<0 || *yPosition<0){
+            printf("Posicao Invalida\n");
+            return 1;
+        }
+
+        changeTabuleiro(tabuleiro,*xPosition,*yPosition,0);
+        return 0;
+    }
+}
+
+void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
+    //printf("ylenght=%d xlenght=%d\n",ylenght,xlenght);
+    for(int i=0;i<ylenght;i++){
+        for(int j=0;j<xlenght;j++){
+            //printf("%d %d\n",i,j);
+            tab[i][j]=0;
+        }
+        //printf("\n");
+    }
+}
+
+void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
+    //TO BE CONTINUED
+}
+
+
 int main(){
     //system("cls");
-    int ylenght=4, xlenght=4;
+    int ylenght=4, xlenght=4, posicao_valida;
     int **tabuleiro;
     char current_player='A';
     int playing = 1;
@@ -237,24 +294,14 @@ int main(){
     else{
         printf("ERRO FODAO");
     }
-    
-    //InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    //printTabuleiro(ylenght,xlenght,tabuleiro);
-    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
-    //printTabuleiro(ylenght,xlenght,tabuleiro);
-
-    //printTabuleiro(ylenght,xlenght,tabuleiro);
-    //printTabuleiro(ylenght,xlenght,tabuleiro);
-    //free(tabuleiro);
-    //changeTabuleiro(4,4,tabuleiro,1,3);
-    //checkForWinner(4,4,tabuleiro);
-    //GetInput(&xPosition,&yPosition,current_player);
-    //printf("%d %d",xPosition,yPosition,current_player);
 
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     while(playing){
+        posicao_valida=1;
         printTabuleiro(xlenght,ylenght,tabuleiro);
-        GetInput(&xPosition,&yPosition,current_player,tabuleiro, xlenght, ylenght);
-        playing = checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
+        while(posicao_valida){
+            posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, xlenght, ylenght);
+        }
+        checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
     }
 }
