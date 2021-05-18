@@ -80,7 +80,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
             //printf("\n");
 
             if(equal_straight==3){
-                printTabuleiro(xlenght,ylenght,tabuleiro);
+                printTabuleiro(ylenght,xlenght,tabuleiro);
                 printf("PLAYER %c IS THE WINNER\n",*current_player);
                 return 0;
             }
@@ -104,7 +104,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
             printf("\n");
         
             if(equal_straight==3){
-                printTabuleiro(xlenght,ylenght,tabuleiro);
+                printTabuleiro(ylenght,xlenght,tabuleiro);
                 printf("PLAYER %c IS THE WINNER\n",*current_player);
                 return 0;
             }
@@ -125,7 +125,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
                 }
             }
             if(equal_straight==xlenght-1){
-                printTabuleiro(xlenght,ylenght,tabuleiro);
+                printTabuleiro(ylenght,xlenght,tabuleiro);
                 printf("PLAYER %c IS THE WINNER\n",*current_player);
                 return 0;
             }
@@ -143,7 +143,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
                 }
             }
             if(equal_straight==xlenght-1){
-                printTabuleiro(xlenght,ylenght,tabuleiro);
+                printTabuleiro(ylenght,xlenght,tabuleiro);
                 printf("PLAYER %c IS THE WINNER\n",*current_player);
                 return 0;
             }
@@ -159,7 +159,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
     return 1;
 }
 
-void ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
+int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
     if(mode=='X'){
         //more xlenght
         for ( size_t i = 0; i < (*ylenght); i++ ){
@@ -169,6 +169,7 @@ void ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
             }
             else{
                 printf("ERRO NA ALOCACAO DE MEMORIA");
+                return 1;
             } 
         }
         for(int i=0;i<(*ylenght);i++){
@@ -176,6 +177,7 @@ void ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
             tabuleiro[i][j]=0;
         }
         (*xlenght)++; 
+        return 0;
     }
     
     else if(mode=='Y'){
@@ -187,16 +189,19 @@ void ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
         }
         else{
             printf("ERRO NA ALOCACAO DE MEMORIA");
+            return 1;
         }
         for(int j=0;j<(*xlenght);j++){
             int i=(*ylenght);
             tabuleiro[i][j]=0;
         }
         (*ylenght)++;
+        return 0;
     }
 
     else{
         printf("MODO DESCONHECIDO");
+        return 1;
     }
 }
 
@@ -212,7 +217,7 @@ int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro
             loop_escolha=0;
         }
         else{
-            printf("Escolha apenas entre P, A ou J");
+            printf("\nEscolha apenas entre P, A ou J");
         }
     }
 
@@ -231,33 +236,43 @@ int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro
         }
         return 0;
     }
+
     else if(escolha=='A'){
-        while(escolhaResize!='L' || escolhaResize!='C'){
+        ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
+        while(loop_resize){
             printf("Pretende aumentar uma linha (L) ou coluna (C)?:");
             fflush(stdin);
             scanf("%c",&escolhaResize);
             if(escolhaResize=='L'){
-                ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
+                loop_resize = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
             }
             else if(escolhaResize=='C'){
-                ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+                loop_resize = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+            }
+            else{
+                printf("Escolha apenas entre L ou C\n");
             }
             
         }
-        
     }
+
     else{
-        printf("Escolha a posicao em que quer jogar (y x): ");
-        fflush(stdin);
-        scanf("%d %d",xPosition,yPosition);
+        while(loop_jogar){
+            printf("Escolha a posicao em que quer jogar (y x): ");
+            fflush(stdin);
+            scanf("%d %d",xPosition,yPosition);
 
-        if(*xPosition>=xlenght || *yPosition>=ylenght || *xPosition<0 || *yPosition<0){
-            printf("Posicao Invalida\n");
-            return 1;
+            if(*xPosition>=xlenght || *yPosition>=ylenght || *xPosition<0 || *yPosition<0){
+                printf("Posicao Invalida\n");
+            }
+            else{
+                loop_jogar = changeTabuleiro(tabuleiro,*xPosition,*yPosition,0);
+            }
         }
-
-        changeTabuleiro(tabuleiro,*xPosition,*yPosition,0);
         return 0;
+        
+
+        
     }
 }
 
@@ -292,13 +307,13 @@ int main(){
         }
     }
     else{
-        printf("ERRO FODAO");
+        printf("Erro na alocacao de memoria\n");
     }
 
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     while(playing){
         posicao_valida=1;
-        printTabuleiro(xlenght,ylenght,tabuleiro);
+        printTabuleiro(ylenght,xlenght,tabuleiro);
         while(posicao_valida){
             posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, xlenght, ylenght);
         }
