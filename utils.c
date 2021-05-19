@@ -21,7 +21,7 @@ int probEvento(float prob){
 
 
 // Função main () com alguns exemplos simples de utilizacao das funcoes
-int main(){
+/* int main(){
 
   int i;
 
@@ -29,11 +29,11 @@ int main(){
 
     printf("10 valores aleatorios uniformes entre [4, 10]:\n");
     for(i=0; i<10; i++)
-        printf("%d\n", intUniformRnd(4, 100));
+        printf("%d\n", intUniformRnd(3, 5));
 
     printf(" Probabilidade 0.25 de um evento suceder: \n");
     for(i=0; i<10; i++)
         printf("%d\n", probEvento(0.25));
 
     return 0;
-}
+} */

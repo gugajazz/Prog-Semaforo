@@ -1,6 +1,7 @@
 //Gustavo Mateus 2020138902
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
 
 void printTabuleiro(int ylenght ,int xlenght,int **tab){
 
@@ -188,12 +189,12 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
 void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
     for(int i=0;i<ylenght;i++){
         for(int j=0;j<xlenght;j++){
-            printf("%d y=%d x=%d\n",tab[i][j],i,j);
+            //printf("%d y=%d x=%d\n",tab[i][j],i,j);
             if(tab[i][j]!=0 && tab[i][j]!=1 && tab[i][j]!=2 && tab[i][j]!=3 && tab[i][j]!=4){
                 tab[i][j]=0;
             }
         }
-        printf("\n");
+        //printf("\n");
     }
 }
 
@@ -272,10 +273,12 @@ void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
     //TO BE CONTINUED
 }
 
-
 int main(){
     //system("cls");
-    int ylenght=3, xlenght=3, posicao_valida;
+    initRandom();
+    int tamanhoInicial = intUniformRnd(3, 5);
+
+    int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida;
     int **tabuleiro;
     char current_player='A';
     int playing = 1;
