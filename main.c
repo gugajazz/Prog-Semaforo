@@ -34,7 +34,6 @@ void printTabuleiro(int ylenght ,int xlenght,int **tab){
         printf("\n");
     }
     printf("\n");
-    //printf("\n------------------------\n\n");
 }
 
 int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra){
@@ -75,9 +74,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
                 if(tabuleiro[y][x]==last_equal){
                     equal_straight++;
                 }
-                //printf("x=%d y=%d val=%d las=%d strai=%d\n",x,y,tab[y][x],last_equal,equal_straight);
             }
-            //printf("\n");
 
             if(equal_straight==3){
                 printTabuleiro(ylenght,xlenght,tabuleiro);
@@ -99,7 +96,6 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
                 if(tabuleiro[y][x]==last_equal){
                     equal_straight++;
                 }
-                //printf("x=%d y=%d val=%d las=%d strai=%d\n",x,y,tab[y][x],last_equal,equal_straight);
             }
             printf("\n");
         
@@ -160,25 +156,8 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
 }
 
 int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
-    //printf("\n%d %d %d %c\n",*ylenght , *xlenght, tabuleiro,  mode);
     if(mode=='X'){
         //more xlenght
-        
-        /* for ( size_t i = 0; i < (*ylenght); i++ ){
-            printf("i=%d tab[i]=%d %d\n",i,tabuleiro[i],sizeof(int*)* ((*ylenght)));
-            //int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * ((*xlenght) + 1) );
-            int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * ((*ylenght)) );
-            if(tmp!=NULL){
-                tabuleiro[i] = tmp;
-            }
-            else{
-                printf("ERRO NA ALOCACAO DE MEMORIA X1\n");
-                //return 1;
-            } 
-        } */
-        //for ( int i = 0; i <= (*xlenght); i++ ){
-            //printf("i=%d tab[i]=%d %d\n",i,tabuleiro[i],sizeof(int*)* ((*ylenght)));
-            //int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * ((*xlenght) + 1) );
             tabuleiro = realloc( tabuleiro, sizeof(int) * ((*xlenght)+1) );
             if(tabuleiro==NULL){
                 printf("ERRO NA ALOCACAO DE MEMORIA X1\n");
@@ -189,50 +168,13 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
                 printf("ERRO NA ALOCACAO DE MEMORIA X2\n");
                 return 1;
             }
-            
-        //}
-        /* for(int i=0;i<(*ylenght);i++){
-            int j=(*xlenght);
-            tabuleiro[i][j]=6;
-        } */
-        /* for(int i=0;i<*ylenght;i++){
-            for(int j=0;j<*xlenght;j++){
-                printf("*%d y=%d x=%d\n",tabuleiro[i][j],i,j);
-            }
-        } */
-        //printf("\n");
-    
         (*xlenght)++; 
         return 0;
     }
     
     else if(mode=='Y'){
         //more ylenght
-        //printf("size=%d\n",((*ylenght)+1));
-        //printf("size=%d\n",sizeof(int*)*(*ylenght));
-        //int **tmp = realloc( tabuleiro, ((*ylenght)+1) );
-        //int **tmp = realloc( tabuleiro, sizeof(int*)*(*ylenght)); /*9 a 24 com x=5 y=6*/
-        //if(tmp!=NULL){
-            //tabuleiro = tmp;
-            //tabuleiro[(*ylenght)] = malloc( sizeof(int) * ((*xlenght)) );
-        //}
-        //else{
-           // printf("ERRO NA ALOCACAO DE MEMORIA Y0\n");
-           // return 1;
-        //}
-
         tabuleiro[(*ylenght)] = malloc( sizeof(int) * ((*xlenght)) );
-
-        /* for(int j=0;j<(*xlenght);j++){
-            int i=(*ylenght);
-            //printf("%d %d\n",i,j);
-            tabuleiro[i][j]=4;
-        } */
-        /* for(int i=0;i<*ylenght;i++){
-            for(int j=0;j<*xlenght;j++){
-                printf("*%d y=%d x=%d\n",tabuleiro[i][j],i,j);
-            }
-        } */
         (*ylenght)++;
         return 0;
     }
@@ -244,7 +186,6 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
 }
 
 void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
-    //printf("ylenght=%d xlenght=%d\n",ylenght,xlenght);
     for(int i=0;i<ylenght;i++){
         for(int j=0;j<xlenght;j++){
             printf("%d y=%d x=%d\n",tab[i][j],i,j);
@@ -340,16 +281,6 @@ int main(){
     int playing = 1;
     int xPosition, yPosition;
 
-    /* tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
-    if (tabuleiro!=NULL){
-        for (int i = 0; i<ylenght; i++){
-            tabuleiro[i] = (int*)malloc(sizeof(int)*xlenght);
-        }
-    }
-    else{
-        printf("Erro na alocacao de memoria\n");
-    } */
-
     tabuleiro = (int**)malloc(sizeof(int*)*xlenght);
     if (tabuleiro!=NULL){
         for (int i = 0; i<ylenght; i++){
@@ -361,53 +292,12 @@ int main(){
     }
 
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    /* while(playing){
+    while(playing){
         posicao_valida=1;
         printTabuleiro(ylenght,xlenght,tabuleiro);
         while(posicao_valida){
             posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght);
         }
         checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
-    } */
-
-    printTabuleiro(ylenght,xlenght,tabuleiro);
-
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    printf("\n");
-    printTabuleiro(ylenght,xlenght,tabuleiro);
-    
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    printf("\n");
-    printTabuleiro(ylenght,xlenght,tabuleiro);
-
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    printf("\n");
-    printTabuleiro(ylenght,xlenght,tabuleiro);
-    
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    printf("\n");
-    printTabuleiro(ylenght,xlenght,tabuleiro);
-
-    /* CX=1 LY=0
-    0000
-    0001
-    0010
-    0011
-    0100
-    0101
-    0110 - MORREU
-    0111
-    1000
-    1001
-    1010
-    1011
-    1100
-    1101
-    1110
-    1111 */
-
+    }
 }
