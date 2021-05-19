@@ -164,14 +164,27 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
     if(mode=='X'){
         //more xlenght
         for ( size_t i = 0; i < (*ylenght); i++ ){
-            int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * ((*xlenght) + 1) );
+            //int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * ((*xlenght) + 1) );
+            /* int *tmp = realloc( tabuleiro[i], 1);
             if(tmp!=NULL){
                 tabuleiro[i] = tmp;
             }
             else{
-                printf("ERRO NA ALOCACAO DE MEMORIA");
+                printf("ERRO NA ALOCACAO DE MEMORIA X1\n");
                 return 1;
-            } 
+            } */ 
+            for(int k=0; k<100;k++){
+                int *tmp = realloc( tabuleiro[i], k);
+                if(tmp!=NULL){
+                    printf("SIMM k=%d i=%d\n",k,i);
+                    tabuleiro[i] = tmp;
+                }
+                else{
+                    printf("ERRO NA ALOCACAO DE MEMORIA X1 k=%d i=%d\n",k,i);
+                    //return 1;
+                } 
+            }
+            
         }
         for(int i=0;i<(*ylenght);i++){
             int j=(*xlenght);
@@ -184,7 +197,7 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
     else if(mode=='Y'){
         //more ylenght
         //printf("size=%d\n",((*ylenght)+1));
-        printf("size=%d\n",sizeof(int*)*(*ylenght));
+        //printf("size=%d\n",sizeof(int*)*(*ylenght));
         //int **tmp = realloc( tabuleiro, ((*ylenght)+1) );
         int **tmp = realloc( tabuleiro, sizeof(int*)*(*ylenght)); /*9 a 24 com x=5 y=6*/
         if(tmp!=NULL){
@@ -192,7 +205,7 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
             tabuleiro[(*ylenght)] = malloc( sizeof(int) * ((*xlenght)+1) );
         }
         else{
-            printf("ERRO NA ALOCACAO DE MEMORIA");
+            printf("ERRO NA ALOCACAO DE MEMORIA Y0\n");
             return 1;
         }
         for(int j=0;j<(*xlenght);j++){
@@ -295,7 +308,7 @@ void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
 
 int main(){
     //system("cls");
-    int ylenght=10, xlenght=5, posicao_valida;
+    int ylenght=3, xlenght=3, posicao_valida;
     int **tabuleiro;
     char current_player='A';
     int playing = 1;
@@ -320,7 +333,29 @@ int main(){
         }
         checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
     } */
+
     printTabuleiro(ylenght,xlenght,tabuleiro);
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
     ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
     printTabuleiro(ylenght,xlenght,tabuleiro);
+
+    /* 0000
+    0001
+    0010
+    0011
+    0100
+    0101
+    0110
+    0111
+    1000
+    1001
+    1010
+    1011
+    1100
+    1101
+    1110
+    1111 */
+
 }
