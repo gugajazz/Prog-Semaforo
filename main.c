@@ -160,7 +160,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
 }
 
 int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
-    printf("\n%d %d %d %c\n",*ylenght , *xlenght, tabuleiro,  mode);
+    //printf("\n%d %d %d %c\n",*ylenght , *xlenght, tabuleiro,  mode);
     if(mode=='X'){
         //more xlenght
         for ( size_t i = 0; i < (*ylenght); i++ ){
@@ -183,7 +183,10 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
     
     else if(mode=='Y'){
         //more ylenght
-        int **tmp = realloc( tabuleiro, ((*ylenght)+1) );
+        //printf("size=%d\n",((*ylenght)+1));
+        printf("size=%d\n",sizeof(int*)*(*ylenght));
+        //int **tmp = realloc( tabuleiro, ((*ylenght)+1) );
+        int **tmp = realloc( tabuleiro, sizeof(int*)*(*ylenght)); /*9 a 24 com x=5 y=6*/
         if(tmp!=NULL){
             tabuleiro = tmp;
             tabuleiro[(*ylenght)] = malloc( sizeof(int) * ((*xlenght)+1) );
@@ -194,6 +197,7 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
         }
         for(int j=0;j<(*xlenght);j++){
             int i=(*ylenght);
+            //printf("%d %d\n",i,j);
             tabuleiro[i][j]=0;
         }
         (*ylenght)++;
@@ -207,7 +211,6 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
 }
 
 int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro, int *xlenght, int *ylenght){
-    //ResizeTabuleiro(ylenght,xlenght,tabuleiro,'X');
     char escolha, escolhaResize;
     int loop_escolha=1, loop_resize=1, loop_jogar=1, loop_changeTabuleiro=1;
     printf("Vez do jogador %c\n",current_player);
@@ -240,7 +243,6 @@ int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro
     }
 
     else if(escolha=='A'){
-        //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
         while(loop_resize){
             printf("Pretende aumentar uma linha (L) ou coluna (C)?:");
             fflush(stdin);
@@ -272,9 +274,6 @@ int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro
             }
         }
         return 0;
-        
-
-        
     } 
 }
 
@@ -296,7 +295,7 @@ void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
 
 int main(){
     //system("cls");
-    int ylenght=4, xlenght=4, posicao_valida;
+    int ylenght=10, xlenght=5, posicao_valida;
     int **tabuleiro;
     char current_player='A';
     int playing = 1;
@@ -313,22 +312,15 @@ int main(){
     }
 
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    while(playing){
+    /* while(playing){
         posicao_valida=1;
         printTabuleiro(ylenght,xlenght,tabuleiro);
         while(posicao_valida){
             posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght);
         }
         checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
-    }
-
-
-    /* printTabuleiro(ylenght,xlenght,tabuleiro);
-
-    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
-    GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght);
-    //xlenght++;
-    
-    printTabuleiro(ylenght,xlenght,tabuleiro); */
-
+    } */
+    printTabuleiro(ylenght,xlenght,tabuleiro);
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    printTabuleiro(ylenght,xlenght,tabuleiro);
 }
