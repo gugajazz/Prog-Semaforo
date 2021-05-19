@@ -170,7 +170,7 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
                 tabuleiro[i] = tmp;
             }
             else{
-                printf("ERRO NA ALOCACAO DE MEMORIA");
+                printf("ERRO NA ALOCACAO DE MEMORIA X1\n");
                 //return 1;
             } 
         }
@@ -178,7 +178,7 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
             int j=(*xlenght);
             tabuleiro[i][j]=0;
         }
-        
+
         for(int i=0;i<(*ylenght);i++){
             int j=(*xlenght);
             tabuleiro[i][j]=0;
@@ -329,18 +329,19 @@ int main(){
 
     printTabuleiro(ylenght,xlenght,tabuleiro);
     ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
-    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
     printTabuleiro(ylenght,xlenght,tabuleiro);
 
-    /* 0000
+    /* Y=1 X=0
+    0000
     0001
     0010
     0011
     0100
     0101
-    0110
+    0110 - MORREU
     0111
     1000
     1001

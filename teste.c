@@ -125,8 +125,10 @@ int main(){
     //GetInput(&xPosition,&yPosition,current_player);
     //printf("%d %d",xPosition,yPosition,current_player);
 
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro);
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
     ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
     printTabuleiro(ylenght,xlenght,tabuleiro);
 
