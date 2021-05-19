@@ -163,29 +163,22 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
     //printf("\n%d %d %d %c\n",*ylenght , *xlenght, tabuleiro,  mode);
     if(mode=='X'){
         //more xlenght
+        
         for ( size_t i = 0; i < (*ylenght); i++ ){
-            //int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * ((*xlenght) + 1) );
-            /* int *tmp = realloc( tabuleiro[i], 1);
+            int *tmp = realloc( tabuleiro[i], sizeof *tabuleiro[i] * ((*xlenght) + 1) );
             if(tmp!=NULL){
                 tabuleiro[i] = tmp;
             }
             else{
-                printf("ERRO NA ALOCACAO DE MEMORIA X1\n");
-                return 1;
-            } */ 
-            for(int k=0; k<100;k++){
-                int *tmp = realloc( tabuleiro[i], k);
-                if(tmp!=NULL){
-                    printf("SIMM k=%d i=%d\n",k,i);
-                    tabuleiro[i] = tmp;
-                }
-                else{
-                    printf("ERRO NA ALOCACAO DE MEMORIA X1 k=%d i=%d\n",k,i);
-                    //return 1;
-                } 
-            }
-            
+                printf("ERRO NA ALOCACAO DE MEMORIA");
+                //return 1;
+            } 
         }
+        for(int i=0;i<(*ylenght);i++){
+            int j=(*xlenght);
+            tabuleiro[i][j]=0;
+        }
+        
         for(int i=0;i<(*ylenght);i++){
             int j=(*xlenght);
             tabuleiro[i][j]=0;
@@ -336,9 +329,9 @@ int main(){
 
     printTabuleiro(ylenght,xlenght,tabuleiro);
     ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
+    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    //ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
     printTabuleiro(ylenght,xlenght,tabuleiro);
 
     /* 0000

@@ -96,7 +96,7 @@ void ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode){
 
 int main(){
     //system("cls");
-    int ylenght=4, xlenght=4, posicao_valida;
+    int ylenght=3, xlenght=3, posicao_valida;
     int **tabuleiro;
     char current_player='A';
     int playing = 1;
@@ -127,7 +127,7 @@ int main(){
 
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro);
-    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
     printTabuleiro(ylenght,xlenght,tabuleiro);
 
     /* while(playing){
