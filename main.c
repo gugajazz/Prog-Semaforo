@@ -354,6 +354,7 @@ int main(){
     char current_player='A';
     int playing = 1;
     int xPosition, yPosition;
+    struct historico *head = NULL;
 
     tabuleiro = (int**)malloc(sizeof(int*)*xlenght);
     if (tabuleiro!=NULL){
@@ -365,20 +366,17 @@ int main(){
         printf("Erro na alocacao de memoria\n");
     }
 
-    /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    while(playing){
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    int y=0;
+    while(y<4){ //MAXIMO 3 JOGADAS
         posicao_valida=1;
         printTabuleiro(ylenght,xlenght,tabuleiro);
         while(posicao_valida){
             posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght);
         }
+        AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
         checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
-    } */
-
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-
-    struct historico *head = NULL;
-    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
-    AdicionaAoHistorico(&head,'B',ylenght,xlenght,tabuleiro);
+        y++;
+    }
     PrintHistorico(head);
 }
