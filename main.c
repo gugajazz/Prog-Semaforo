@@ -3,6 +3,15 @@
 #include <stdlib.h>
 #include "utils.h"
 
+struct historico{
+    int xlenght;
+    int ylenght;
+    char current_player;
+    int **tabuleiro;
+
+    struct historico *next;
+};
+
 void printTabuleiro(int ylenght ,int xlenght,int **tab){
 
     for(int i=0;i<xlenght;i++){
@@ -273,11 +282,73 @@ void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
     //TO BE CONTINUED
 }
 
+void AdicionaAoHistorico(struct historico** head, char current_player, int ylenght ,int xlenght, int **tabela_atual){
+	struct historico* new_historico = (struct historico*) malloc(sizeof(struct historico));
+
+	struct historico *last = *head;
+
+    /*****************************************************************/
+
+    new_historico->tabuleiro = (int**)malloc(sizeof(int*)*xlenght);
+    if (new_historico->tabuleiro!=NULL){
+        for (int i = 0; i<ylenght; i++){
+            new_historico->tabuleiro[i] = (int*)malloc(sizeof(int)*ylenght);
+        }
+    }
+    else{
+        printf("Erro na alocacao de memoria\n");
+    }
+
+    for(int i=0; i<ylenght; i++){
+        for(int j=0; j<xlenght; j++){
+            new_historico->tabuleiro[i][j] = tabela_atual[i][j];
+        }
+    }
+
+    new_historico->xlenght=xlenght;
+    new_historico->ylenght=ylenght;
+    new_historico->current_player=current_player;
+
+
+
+    /*****************************************************************/
+
+	new_historico->next = NULL;
+
+	if (*head == NULL){
+        *head = new_historico;
+        return;
+	}
+    else{
+        while (last->next != NULL) //enquanto o last n for o ultimo 
+            last = last->next;
+
+        
+        last->next = new_historico; /*aponta o penultimo p o q criamos agr*/
+        return;
+    }
+}
+
+void PrintHistorico(struct historico *head){
+    while(head!=NULL){
+        printf("\nCurrent player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
+        printf("Table:\n");
+        for(int i=0; i<3; i++){
+            for(int j=0; j<3; j++){
+                printf("%d ",head->tabuleiro[i][j]);
+            }
+            printf("\n");
+        }
+        //printf("%d -> ",head->data);
+        head = head->next;
+    }
+    //printf("NULL");
+} 
+
 int main(){
     //system("cls");
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5);
-
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida;
     int **tabuleiro;
     char current_player='A';
@@ -294,7 +365,7 @@ int main(){
         printf("Erro na alocacao de memoria\n");
     }
 
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     while(playing){
         posicao_valida=1;
         printTabuleiro(ylenght,xlenght,tabuleiro);
@@ -302,5 +373,12 @@ int main(){
             posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght);
         }
         checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
-    }
+    } */
+
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+
+    struct historico *head = NULL;
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+    AdicionaAoHistorico(&head,'B',ylenght,xlenght,tabuleiro);
+    PrintHistorico(head);
 }
