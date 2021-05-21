@@ -363,6 +363,41 @@ int **tabela_atual){
     }
 }
 
+void exportFile(struct historico *head,char NomeFicheiro[50], int ylenght ,int xlenght){
+
+    int m=0;
+    do{
+        m++;
+    }while(NomeFicheiro[m]!='\0');
+    NomeFicheiro[m]='.';
+    NomeFicheiro[m+1]='t';
+    NomeFicheiro[m+2]='x';
+    NomeFicheiro[m+3]='t';
+    NomeFicheiro[m+4]='\0';
+    //printf("%s",NomeFicheiro);
+
+    FILE *fp;
+    fp = fopen (NomeFicheiro,"w");
+
+    fprintf (fp, "Tisss b line\n");
+
+    while(head!=NULL){
+        fprintf(fp, "Current player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
+        fprintf(fp, "Table:\n");
+        for(int i=0; i<ylenght; i++){
+            for(int j=0; j<xlenght; j++){
+                fprintf(fp,"%d ",head->tabuleiro[i][j]);
+            }
+            fprintf(fp,"\n");
+        }
+        fprintf(fp,"\n");
+        //printf("%d -> ",head->data);
+        head = head->next;
+    }
+    
+    fclose (fp);
+
+}
 
 int main(){
     //system("cls");
@@ -374,6 +409,7 @@ int main(){
     int playing = 1;
     int xPosition, yPosition;
     struct historico *head = NULL;
+    char NomeFicheiro[50];
 
     tabuleiro = (int**)malloc(sizeof(int*)*xlenght);
     if (tabuleiro!=NULL){
@@ -387,13 +423,19 @@ int main(){
 
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     //int y=0;
-    while(playing){ //MAXIMO 3 JOGADAS
+    while(playing){         
         posicao_valida=1;
         printTabuleiro(ylenght,xlenght,tabuleiro);
         while(posicao_valida){
             posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght, head);
         }
         AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
-        checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
+        playing = checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
+        if(playing==0){
+            printf("\nIndique o nome do ficheiro por favor: ");
+            fflush(stdin);
+            scanf("%20s",NomeFicheiro);
+            exportFile(head, NomeFicheiro, ylenght, xlenght);
+        }
     }
 }
