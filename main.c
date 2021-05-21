@@ -46,6 +46,23 @@ void printTabuleiro(int ylenght ,int xlenght,int **tab){
     printf("\n");
 }
 
+void PrintHistorico(struct historico *head, int num_jogadas, int ylenght ,int xlenght){
+    while(head!=NULL || num_jogadas>0){
+        printf("\nCurrent player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
+        printf("Table:\n");
+        for(int i=0; i<ylenght; i++){
+            for(int j=0; j<xlenght; j++){
+                printf("%d ",head->tabuleiro[i][j]);
+            }
+            printf("\n");
+        }
+        //printf("%d -> ",head->data);
+        head = head->next;
+        num_jogadas--;
+    }
+    //printf("NULL");
+} 
+
 int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra){
     if(pedra==1){
         if(tabuleiro[xPosition][yPosition]==4){
@@ -207,19 +224,21 @@ void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
     }
 }
 
-int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro, int *xlenght, int *ylenght){
+int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro, int *xlenght, int *ylenght, 
+struct historico *head){
+
     char escolha, escolhaResize;
-    int loop_escolha=1, loop_resize=1, loop_jogar=1, loop_changeTabuleiro=1;
+    int loop_escolha=1, loop_resize=1, loop_jogar=1, loop_changeTabuleiro=1, loop_ultimas=1;
     printf("Vez do jogador %c\n",current_player);
     while(loop_escolha){
-        printf("\nPretende colocar uma pedra (P), aumentar o tabuleiro (A) ou jogar(J)?:");
+        printf("\nPretende ver as ultimas jogadas (U), colocar uma pedra (P), aumentar o tabuleiro (A) ou jogar(J)?:");
         fflush(stdin);
         scanf("%c",&escolha);
-        if(escolha=='P' || escolha=='A' || escolha=='J'){
+        if(escolha=='P' || escolha=='A' || escolha=='J' || escolha=='U'){
             loop_escolha=0;
         }
         else{
-            printf("\nEscolha apenas entre P, A ou J");
+            printf("\nEscolha apenas entre U, P, A ou J");
         }
     }
 
@@ -261,6 +280,19 @@ int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro
         }
     }
 
+    else if(escolha=='U'){
+        int k;
+        while(loop_ultimas){
+            printf("Indique o numero de jogadas anteriores que pretende visualisar:");
+            fflush(stdin);
+            scanf("%d",&k);
+            if(k>0){
+                PrintHistorico(head,k,*ylenght,*xlenght);
+                loop_ultimas = 0;
+            }
+        }
+    }
+
     else{
         while(loop_jogar){
             printf("Escolha a posicao em que quer jogar (y x): ");
@@ -282,7 +314,9 @@ void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
     //TO BE CONTINUED
 }
 
-void AdicionaAoHistorico(struct historico** head, char current_player, int ylenght ,int xlenght, int **tabela_atual){
+void AdicionaAoHistorico(struct historico** head, char current_player, int ylenght ,int xlenght, 
+int **tabela_atual){
+
 	struct historico* new_historico = (struct historico*) malloc(sizeof(struct historico));
 
 	struct historico *last = *head;
@@ -329,21 +363,6 @@ void AdicionaAoHistorico(struct historico** head, char current_player, int yleng
     }
 }
 
-void PrintHistorico(struct historico *head){
-    while(head!=NULL){
-        printf("\nCurrent player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
-        printf("Table:\n");
-        for(int i=0; i<3; i++){
-            for(int j=0; j<3; j++){
-                printf("%d ",head->tabuleiro[i][j]);
-            }
-            printf("\n");
-        }
-        //printf("%d -> ",head->data);
-        head = head->next;
-    }
-    //printf("NULL");
-} 
 
 int main(){
     //system("cls");
@@ -367,16 +386,14 @@ int main(){
     }
 
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    int y=0;
-    while(y<4){ //MAXIMO 3 JOGADAS
+    //int y=0;
+    while(playing){ //MAXIMO 3 JOGADAS
         posicao_valida=1;
         printTabuleiro(ylenght,xlenght,tabuleiro);
         while(posicao_valida){
-            posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght);
+            posicao_valida = GetInput(&xPosition,&yPosition,current_player,tabuleiro, &xlenght, &ylenght, head);
         }
         AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
         checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
-        y++;
     }
-    PrintHistorico(head);
 }
