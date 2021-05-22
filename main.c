@@ -90,6 +90,15 @@ int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra){
     }
 }
 
+void ChangeCurrentPlayer(char *current_player){
+    if(*current_player=='A'){
+        *current_player='B';
+    }
+    else{
+        *current_player='A';
+    }
+}
+
 int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_player){
     int equal_straight=0, last_equal;
     //horizontal
@@ -171,13 +180,6 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
                 return 0;
             }
         }
-    }
-
-    if(*current_player=='A'){
-        *current_player='B';
-    }
-    else{
-        *current_player='A';
     }
     return 1;
 }
@@ -399,6 +401,19 @@ void exportFile(struct historico *head,char NomeFicheiro[50], int ylenght ,int x
 
 }
 
+void randomPlayer(int ylenght ,int xlenght,int **tabuleiro){
+    initRandom();
+    int output_change = 1;
+    int xpos, ypos;
+    do{
+        xpos = intUniformRnd(0, xlenght);
+        ypos = intUniformRnd(0, ylenght);
+        changeTabuleiro(tabuleiro, xpos, ypos,0);
+    }while(output_change);
+    
+    printf("\nO computador jogou na posicao y%d x%d\n\n",xpos,ypos);
+}
+
 int main(){
     //system("cls");
     initRandom();
@@ -410,6 +425,7 @@ int main(){
     int xPosition, yPosition;
     struct historico *head = NULL;
     char NomeFicheiro[50];
+    int ModoJogo;
 
     tabuleiro = (int**)malloc(sizeof(int*)*xlenght);
     if (tabuleiro!=NULL){
@@ -421,6 +437,14 @@ int main(){
         printf("Erro na alocacao de memoria\n");
     }
 
+
+    do{
+        printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
+        fflush(stdin);
+        scanf("%d",&ModoJogo);
+    }while(ModoJogo!=1 && ModoJogo!=2);
+    
+
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     //int y=0;
     while(playing){         
@@ -431,6 +455,14 @@ int main(){
         }
         AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
         playing = checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
+
+        if(ModoJogo==2){
+            ChangeCurrentPlayer(&current_player);
+        }
+        else if(ModoJogo==1){
+            randomPlayer(ylenght, xlenght, tabuleiro);
+        }
+
         if(playing==0){
             printf("\nIndique o nome do ficheiro por favor: ");
             fflush(stdin);
