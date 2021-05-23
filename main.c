@@ -319,7 +319,7 @@ void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
 void AdicionaAoHistorico(struct historico** head, char current_player, int ylenght ,int xlenght, 
 int **tabela_atual){
 
-	struct historico* new_historico = (struct historico*) malloc(sizeof(struct historico));
+	struct historico *new_historico = (struct historico*) malloc(sizeof(struct historico));
 
 	struct historico *last = *head;
 
@@ -404,30 +404,33 @@ void exportFile(struct historico *head, char NomeFicheiro[50], int ylenght ,int 
 void SaveState(struct historico *head, int *ylenght ,int *xlenght){
     FILE *fp;
     fp = fopen ("jogo","wb");
-    
+    while(head!=NULL){
+        fwrite(head,sizeof(struct historico),1,fp);
+        head = head->next;
+    }
 
-    /* head->xlenght=420;
-    head->ylenght=69;
-    head->current_player='G'; */
-
-    fwrite(head,sizeof(struct historico),1,fp);
     fclose(fp); 
-    
 }
 
-void ReadState(struct historico *head){
+void ReadState(){
+    struct historico *FromFile = (struct historico*) malloc(sizeof(struct historico));
     FILE *fp = fopen("jogo", "rb");
 
-    fread(head, sizeof(struct historico), 1, fp);
-    fclose(fp);
+    while(FromFile!=NULL){
+        fread(FromFile, sizeof(struct historico), 1, fp);
 
-    printf("x = %d\ny = %d\nplayer:%c\n", head->xlenght, head->ylenght,head->current_player);
-    for(int i=0;i<head->ylenght;i++){
-        for(int j=0;j<head->xlenght;j++){
-            printf("%d ",head->tabuleiro[i][j]);
-        }   
+        printf("x = %d\ny = %d\nplayer:%c\n", FromFile->xlenght, FromFile->ylenght,FromFile->current_player);
+        for(int i=0;i<FromFile->ylenght;i++){
+            for(int j=0;j<FromFile->xlenght;j++){
+                printf("%d ",FromFile->tabuleiro[i][j]);
+            }   
+            printf("\n");
+        }
         printf("\n");
+        FromFile = FromFile->next;
     }
+
+    fclose(fp);
 }
 
 void randomPlayer(int ylenght ,int xlenght,int **tabuleiro){
@@ -466,8 +469,6 @@ int main(){
     else{
         printf("Erro na alocacao de memoria\n");
     }
-
-    //printf("fora:%d\n",ylenght);
     
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     changeTabuleiro(tabuleiro,0,0,0);
@@ -476,9 +477,9 @@ int main(){
     AdicionaAoHistorico(&head,'B',3,3,tabuleiro);
     changeTabuleiro(tabuleiro,0,2,0);
     AdicionaAoHistorico(&head,'A',3,3,tabuleiro);
-    printf("FORA:%d\n",head->ylenght);
-    SaveState(head,&ylenght,&xlenght);
-    ReadState(head);
+    //printf("FORA:%d\n",head->ylenght);
+    /* SaveState(head,&ylenght,&xlenght);
+    ReadState(head); */
 
     /* do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
