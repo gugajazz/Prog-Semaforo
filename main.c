@@ -401,25 +401,29 @@ void exportFile(struct historico *head, char NomeFicheiro[50], int ylenght ,int 
 
 }
 
-void SaveState(struct historico *head, int *ylenght ,int *xlenght){
+void SaveState(struct historico *head){
     FILE *fp;
-    fp = fopen ("jogo","wb");
+    fp = fopen ("jogo.bin","wb");
     while(head!=NULL){
         fwrite(head,sizeof(struct historico),1,fp);
+        /* printf("%d %d %d\n",head->tabuleiro[0][0],head->tabuleiro[0][1],head->tabuleiro[0][2]);
+        printf("%d %d %d\n",head->tabuleiro[1][0],head->tabuleiro[1][1],head->tabuleiro[1][2]);
+        printf("%d %d %d\n\n",head->tabuleiro[2][0],head->tabuleiro[2][1],head->tabuleiro[2][2]); */
         head = head->next;
     }
-
     fclose(fp); 
 }
 
-void ReadState(){
+
+void ReadState(int ylenght,int xlenght){
     struct historico *FromFile = (struct historico*) malloc(sizeof(struct historico));
-    FILE *fp = fopen("jogo", "rb");
+    FILE *fp = fopen("jogo.bin", "rb");
 
+    fread(FromFile, sizeof(struct historico), 1, fp);
     while(FromFile!=NULL){
-        fread(FromFile, sizeof(struct historico), 1, fp);
-
+        
         printf("x = %d\ny = %d\nplayer:%c\n", FromFile->xlenght, FromFile->ylenght,FromFile->current_player);
+        
         for(int i=0;i<FromFile->ylenght;i++){
             for(int j=0;j<FromFile->xlenght;j++){
                 printf("%d ",FromFile->tabuleiro[i][j]);
@@ -477,9 +481,11 @@ int main(){
     AdicionaAoHistorico(&head,'B',3,3,tabuleiro);
     changeTabuleiro(tabuleiro,0,2,0);
     AdicionaAoHistorico(&head,'A',3,3,tabuleiro);
-    //printf("FORA:%d\n",head->ylenght);
-    /* SaveState(head,&ylenght,&xlenght);
-    ReadState(head); */
+    SaveState(head);
+    
+    //PrintHistorico(head,3,ylenght,xlenght);
+    printf("--------\n");
+    ReadState(ylenght,xlenght);
 
     /* do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");

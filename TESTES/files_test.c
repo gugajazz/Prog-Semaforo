@@ -1,28 +1,43 @@
-#include <stdio.h>
-
-typedef struct
+/* #include<stdio.h>
+struct address
 {
-    int    a;
-    double b;
-} TestStruct;
+ int tab[2][2];
+};
 
-int main(void)
+int main()
 {
-    /*FILE *file = fopen("test", "wb");
+    FILE *p;
+    struct address x;
+    int tab[2][2]= {{1,2},{3,4}};
+    p=fopen("address","wb");
 
-    TestStruct ts;
-    ts.a = 105;
-    ts.b = 194.543;
+    fwrite(&x,sizeof(x),1,p);
 
-    fwrite(&ts, sizeof(TestStruct), 1, file);
-    fclose(file); */
+    fclose(p);
+    printf("1 file created");
+    return 0;
+}  */
 
-    FILE *file = fopen("test", "rb");
 
-    TestStruct ts;
+#include<stdio.h>
+struct address
+{
+ int tab[2][2];
+};
 
-    fread(&ts, sizeof(TestStruct), 1, file);
-    fclose(file);
-
-    printf("ts.a = %d\nts.b = %f\n", ts.a, ts.b);
+int main()
+{
+ FILE *p;
+ struct address x;
+ p=fopen("address","rb");
+ printf("Rcords of file:\n");
+ while(1)
+ {
+  fread(&x,sizeof(x),1,p);
+  if(feof(p)!=0)
+    break;
+  printf("%d",x.tab[1][2]);
+ }
+ fclose(p);
+ return 0;
 }
