@@ -365,7 +365,7 @@ int **tabela_atual){
     }
 }
 
-void exportFile(struct historico *head,char NomeFicheiro[50], int ylenght ,int xlenght){
+void exportFile(struct historico *head, char NomeFicheiro[50], int ylenght ,int xlenght){
 
     int m=0;
     do{
@@ -401,6 +401,35 @@ void exportFile(struct historico *head,char NomeFicheiro[50], int ylenght ,int x
 
 }
 
+void SaveState(struct historico *head, int *ylenght ,int *xlenght){
+    FILE *fp;
+    fp = fopen ("jogo","wb");
+    
+
+    /* head->xlenght=420;
+    head->ylenght=69;
+    head->current_player='G'; */
+
+    fwrite(head,sizeof(struct historico),1,fp);
+    fclose(fp); 
+    
+}
+
+void ReadState(struct historico *head){
+    FILE *fp = fopen("jogo", "rb");
+
+    fread(head, sizeof(struct historico), 1, fp);
+    fclose(fp);
+
+    printf("x = %d\ny = %d\nplayer:%c\n", head->xlenght, head->ylenght,head->current_player);
+    for(int i=0;i<head->ylenght;i++){
+        for(int j=0;j<head->xlenght;j++){
+            printf("%d ",head->tabuleiro[i][j]);
+        }   
+        printf("\n");
+    }
+}
+
 void randomPlayer(int ylenght ,int xlenght,int **tabuleiro){
     initRandom();
     int output_change = 1;
@@ -418,7 +447,8 @@ int main(){
     //system("cls");
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5);
-    int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida;
+    //int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida;
+    int ylenght=3,xlenght=3,posicao_valida;
     int **tabuleiro;
     char current_player='A';
     int playing = 1;
@@ -437,14 +467,24 @@ int main(){
         printf("Erro na alocacao de memoria\n");
     }
 
+    //printf("fora:%d\n",ylenght);
+    
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    changeTabuleiro(tabuleiro,0,0,0);
+    AdicionaAoHistorico(&head,'A',3,3,tabuleiro);
+    changeTabuleiro(tabuleiro,0,1,0);
+    AdicionaAoHistorico(&head,'B',3,3,tabuleiro);
+    changeTabuleiro(tabuleiro,0,2,0);
+    AdicionaAoHistorico(&head,'A',3,3,tabuleiro);
+    printf("FORA:%d\n",head->ylenght);
+    SaveState(head,&ylenght,&xlenght);
+    ReadState(head);
 
-    do{
+    /* do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
         fflush(stdin);
         scanf("%d",&ModoJogo);
     }while(ModoJogo!=1 && ModoJogo!=2);
-    
-
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     //int y=0;
     while(playing){         
@@ -469,5 +509,5 @@ int main(){
             scanf("%20s",NomeFicheiro);
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
-    }
+    } */
 }

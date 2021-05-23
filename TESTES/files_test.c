@@ -1,19 +1,28 @@
 #include <stdio.h>
- 
-#define LEN 256
-int main ()
+
+typedef struct
 {
-   FILE *fp;
-   int i;
-   /* open the file for writing*/
-   fp = fopen ("kkkkk.txt","w");
- 
-   /* write 10 lines of text into the file stream*/
-   for(i = 0; i < 10;i++){
-       fprintf (fp, "Tisss b line %d\n",i + 1);
-   }
- 
-   /* close the file*/  
-   fclose (fp);
-   return 0;
+    int    a;
+    double b;
+} TestStruct;
+
+int main(void)
+{
+    /*FILE *file = fopen("test", "wb");
+
+    TestStruct ts;
+    ts.a = 105;
+    ts.b = 194.543;
+
+    fwrite(&ts, sizeof(TestStruct), 1, file);
+    fclose(file); */
+
+    FILE *file = fopen("test", "rb");
+
+    TestStruct ts;
+
+    fread(&ts, sizeof(TestStruct), 1, file);
+    fclose(file);
+
+    printf("ts.a = %d\nts.b = %f\n", ts.a, ts.b);
 }
