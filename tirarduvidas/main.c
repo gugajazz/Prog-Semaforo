@@ -144,8 +144,8 @@ int main(){
 
     printTabuleiro(ylenght,xlenght,tabuleiro);
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X');
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y');
     
     printTabuleiro(ylenght,xlenght,tabuleiro);
@@ -157,7 +157,7 @@ int main(){
     0011
     0100
     0101
-    0110 - MORREU
+    0110
     0111
     1000
     1001
