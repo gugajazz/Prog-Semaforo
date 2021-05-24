@@ -191,18 +191,19 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
     return 1;
 }
 
-int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, char current_player, int *nAumentosA, int *nAumentosB){
+int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, char current_player, int *nAumentosA, int *nAumentosB){
+    int **error=NULL;
     if(mode=='X'){
         //more xlenght
             tabuleiro = realloc( tabuleiro, sizeof(int) * ((*xlenght)+1) );
             if(tabuleiro==NULL){
                 printf("ERRO NA ALOCACAO DE MEMORIA X1\n");
-                return 1;
+                return error;
             }
             tabuleiro[*xlenght] = malloc(sizeof(int)*(*ylenght));
             if(tabuleiro[*xlenght]==NULL){
                 printf("ERRO NA ALOCACAO DE MEMORIA X2\n");
-                return 1;
+                return error;
             }
         (*xlenght)++;
         if(current_player='A'){
@@ -211,7 +212,7 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, char 
         else{
             (*nAumentosB)++;
         }
-        return 0;
+        return tabuleiro;
     }
     
     else if(mode=='Y'){
@@ -224,12 +225,12 @@ int ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, char 
         else{
             (*nAumentosB)++;
         }
-        return 0;
+        return tabuleiro;
     }
 
     else{
         printf("MODO DESCONHECIDO");
-        return 1;
+        return error;
     }
 }
 
@@ -291,17 +292,17 @@ struct historico *head, int nAumentosA, int nAumentosB, int *nPedrasA, int *nPed
     }
 
     else if(escolha=='A'){
-        while(loop_resize){
+        //while(tabuleiro){
             printf("Pretende aumentar uma linha (L) ou coluna (C)?:");
             fflush(stdin);
             scanf("%c",&escolhaResize);
             if(escolhaResize=='C'){
-                loop_resize = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'X',current_player,&nAumentosA,&nAumentosB);
+                tabuleiro = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'X',current_player,&nAumentosA,&nAumentosB);
                 InicializaTabuleiro(*ylenght,*xlenght,tabuleiro);
                 return 0;
             }
             else if(escolhaResize=='L'){
-                loop_resize = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'Y',current_player,&nAumentosA,&nAumentosB);
+                tabuleiro = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'Y',current_player,&nAumentosA,&nAumentosB);
                 InicializaTabuleiro(*ylenght,*xlenght,tabuleiro);
                 return 0;
             }
@@ -309,7 +310,7 @@ struct historico *head, int nAumentosA, int nAumentosB, int *nPedrasA, int *nPed
                 printf("Escolha apenas entre L ou C\n");
             }
             
-        }
+        //}
     }
 
     else if(escolha=='U'){
