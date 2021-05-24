@@ -195,16 +195,21 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, cha
 
     if(mode=='C'){
         //more xlenght
-            tabuleiro = realloc( tabuleiro, sizeof(int) * ((*xlenght)+1) );
-            if(tabuleiro==NULL){
-                printf("ERRO NA ALOCACAO DE MEMORIA X1\n");
+
+        for(int i=0;i<(*ylenght);i++){
+            tabuleiro[i] = realloc( tabuleiro[i], sizeof(int) * ((*xlenght)+1) );
+
+            if(tabuleiro[0]==NULL){
+                printf("ERRO NA ALOCACAO DE MEMORIA X%d\n",i);
                 return NULL;
             }
-            tabuleiro[*xlenght] = malloc(sizeof(int)*(*ylenght));
-            if(tabuleiro[*xlenght]==NULL){
-                printf("ERRO NA ALOCACAO DE MEMORIA X2\n");
-                return NULL;
-            }
+        }
+
+        for(int i=0;i<(*ylenght);i++){
+            int j=(*xlenght);
+            tabuleiro[i][j]=6;
+        }
+
         (*xlenght)++;
         if(current_player='A'){
             (*nAumentosA)++;
@@ -217,7 +222,22 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, cha
     
     else if(mode=='L'){
         //more ylenght
-        tabuleiro[(*ylenght)] = malloc( sizeof(int) * ((*xlenght)) );
+        tabuleiro = realloc( tabuleiro, sizeof(int*) * ((*ylenght)+1) );
+        if(tabuleiro==NULL){
+                printf("ERRO NA ALOCACAO DE MEMORIA Y1\n");
+                return NULL;
+        }
+        tabuleiro[*ylenght] = malloc( sizeof(int) * ((*xlenght)) );
+        if(tabuleiro[(*ylenght)]==NULL){
+            printf("ERRO NA ALOCACAO DE MEMORIA Y1\n");
+            return NULL;
+        }
+
+        for(int i=0;i<(*xlenght);i++){
+            int j=(*ylenght);
+            tabuleiro[j][i]=4;
+        } 
+
         (*ylenght)++;
         if(current_player='A'){
             (*nAumentosA)++;
@@ -613,10 +633,10 @@ int main(){
     char NomeFicheiro[50];
     int nPedrasA=0,nPedrasB=0,nAumentosA=0,nAumentosB=0;
 
-    tabuleiro = (int**)malloc(sizeof(int*)*xlenght);
+    tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
     if (tabuleiro!=NULL){
         for (int i = 0; i<ylenght; i++){
-            tabuleiro[i] = (int*)malloc(sizeof(int)*ylenght);
+            tabuleiro[i] = (int*)malloc(sizeof(int)*xlenght);
         }
     }
     else{
@@ -631,7 +651,7 @@ int main(){
     changeTabuleiro(tabuleiro,0,2,0);
     AdicionaAoHistorico(&head,'A',3,3,tabuleiro); */
 
-    do{
+    /* do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
         fflush(stdin);
         scanf("%d",&ModoJogo);
@@ -680,5 +700,18 @@ int main(){
             scanf("%20s",NomeFicheiro);
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
-    }
+    } */
+
+
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+
+    printTabuleiro(ylenght,xlenght,tabuleiro);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
+    
+    printf("%d %d",ylenght,xlenght);
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    printTabuleiro(ylenght,xlenght,tabuleiro);
 }

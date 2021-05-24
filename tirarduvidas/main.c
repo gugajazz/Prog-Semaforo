@@ -127,7 +127,7 @@ void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
 }
 
 int main(){
-    int ylenght=3, xlenght=3, posicao_valida, ModoJogo;
+    int ylenght=4, xlenght=4, posicao_valida, ModoJogo;
     int **tabuleiro;
 
     tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
