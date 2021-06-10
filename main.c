@@ -65,14 +65,17 @@ void PrintHistorico(struct historico *head, int num_jogadas, int ylenght ,int xl
 
 int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra, char current_player, int *nPedrasA, int *nPedrasB){
     if(pedra==1){
-        if(tabuleiro[yPosition][xPosition]==4){
+        if(tabuleiro[yPosition][xPosition]==4){ //verifica que não há uma pedra onde estamos a tentar por uma pedra
             printf("Ja exite uma pedra nessa posicao\n");
+            return 1;
+        }
+        if(tabuleiro[yPosition][xPosition]!=0){ //verifica que não há uma peca onde estamos a tentar por uma pedra
+            printf("Ja exite uma peca nessa posicao\n");
             return 1;
         }
         tabuleiro[yPosition][xPosition]=4;
         if(current_player=='A'){
             (*nPedrasA)++;
-            printf("kkkkk");
         }
         else{
             (*nPedrasB)++;
@@ -119,7 +122,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
                 }
             }
 
-            if(equal_straight==3){
+            if(equal_straight==xlenght-1){
                 printTabuleiro(ylenght,xlenght,tabuleiro);
                 printf("PLAYER %c IS THE WINNER\n",*current_player);
                 return 0;
@@ -142,7 +145,7 @@ int checkForWinner(int xlenght ,int ylenght,int **tabuleiro, char *current_playe
             }
             printf("\n");
         
-            if(equal_straight==3){
+            if(equal_straight==ylenght-1){
                 printTabuleiro(ylenght,xlenght,tabuleiro);
                 printf("PLAYER %c IS THE WINNER\n",*current_player);
                 return 0;
@@ -229,7 +232,7 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, cha
         }
         tabuleiro[*ylenght] = malloc( sizeof(int) * ((*xlenght)) );
         if(tabuleiro[(*ylenght)]==NULL){
-            printf("ERRO NA ALOCACAO DE MEMORIA Y1\n");
+            printf("ERRO NA ALOCACAO DE MEMORIA Y2\n");
             return NULL;
         }
 
@@ -474,7 +477,7 @@ int **tabela_atual){
         }
     }
     else{
-        printf("Erro na alocacao de memoria\n");
+        printf("Erro na alocacao de memoria historico\n");
     }
 
     for(int i=0; i<ylenght; i++){
@@ -627,6 +630,9 @@ void randomPlayer(int ylenght ,int xlenght,int **tabuleiro, char current_player,
 int main(){
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5), numeroRondas=0;
+
+    tamanhoInicial = 3;
+
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida, ModoJogo;
     int **tabuleiro;
     char current_player='A', modo, modoResize;
@@ -643,7 +649,7 @@ int main(){
         }
     }
     else{
-        printf("Erro na alocacao de memoria\n");
+        printf("Erro na alocacao de memoria g1\n");
     }
     
     /*InicializaTabuleiro(ylenght,xlenght,tabuleiro);
@@ -659,6 +665,7 @@ int main(){
         fflush(stdin);
         scanf("%d",&ModoJogo);
     }while(ModoJogo!=1 && ModoJogo!=2);
+
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     
     while(playing){         
@@ -706,17 +713,18 @@ int main(){
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
         numeroRondas++;
-    }
+    }  
 
 
     /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
 
     printTabuleiro(ylenght,xlenght,tabuleiro);
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+
+    changeTabuleiro(tabuleiro,4,2,0,current_player,&nPedrasA,&nPedrasB);
+
     printf("%d %d",ylenght,xlenght);
     InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro); */
