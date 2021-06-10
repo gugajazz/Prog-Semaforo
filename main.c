@@ -46,12 +46,12 @@ void printTabuleiro(int ylenght ,int xlenght,int **tab){
     printf("\n");
 }
 
-void PrintHistorico(struct historico *head, int num_jogadas, int ylenght ,int xlenght){
-    while(head!=NULL || num_jogadas>0){
+void PrintHistorico(struct historico *head, int num_jogadas){
+    while(head!=NULL && num_jogadas>0){ //tirar o comentario para so mostrar o num de jogadas pedidas
         printf("\nCurrent player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
         printf("Table:\n");
-        for(int i=0; i<ylenght; i++){
-            for(int j=0; j<xlenght; j++){
+        for(int i=0; i<head->ylenght; i++){
+            for(int j=0; j<head->xlenght; j++){
                 printf("%d ",head->tabuleiro[i][j]);
             }
             printf("\n");
@@ -329,7 +329,7 @@ void Input3(struct historico* head, int *xlenght, int *ylenght, int numeroRondas
         fflush(stdin);
         scanf("%d",&k);
         if(k>=0 && k<=numeroRondas){
-            PrintHistorico(head,k,*ylenght,*xlenght);
+            PrintHistorico(head,k);
             loop_ultimas = 0;
         }
         else{
@@ -434,7 +434,7 @@ int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro
             fflush(stdin);
             scanf("%d",&k);
             if(k>0){
-                PrintHistorico(head,k,*ylenght,*xlenght);
+                PrintHistorico(head,k);
                 loop_ultimas = 0;
             }
         }
@@ -660,7 +660,7 @@ int main(){
     changeTabuleiro(tabuleiro,0,2,0);
     AdicionaAoHistorico(&head,'A',3,3,tabuleiro); */
 
-    do{
+    /* do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
         fflush(stdin);
         scanf("%d",&ModoJogo);
@@ -697,6 +697,8 @@ int main(){
 
            
         AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+
         playing = checkForWinner(xlenght,ylenght,tabuleiro,&current_player);
 
         if(ModoJogo==2){
@@ -713,19 +715,35 @@ int main(){
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
         numeroRondas++;
-    }  
+    }  */ 
 
 
-    /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro);
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    changeTabuleiro(tabuleiro,3,2,0,current_player,&nPedrasA,&nPedrasB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
+    
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     changeTabuleiro(tabuleiro,4,2,0,current_player,&nPedrasA,&nPedrasB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
-    printf("%d %d",ylenght,xlenght);
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    printTabuleiro(ylenght,xlenght,tabuleiro); */
+
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    changeTabuleiro(tabuleiro,5,2,0,current_player,&nPedrasA,&nPedrasB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    changeTabuleiro(tabuleiro,6,0,0,current_player,&nPedrasA,&nPedrasB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+
+    printf("\n-------------------");
+    PrintHistorico(head, 4);
+    printf("-------------------\n");
+
+    
 }
