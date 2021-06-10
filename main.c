@@ -270,7 +270,7 @@ void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
 }
 
 char Input1(char current_player, int nPedrasA, int nPedrasB, int nAumentosA, int nAumentosB){
-    printf("INPUT1\n");
+    //printf("INPUT1\n");
     //devolve U ou P ou A ou J
     int loop_escolha=1;
     char escolha;
@@ -466,15 +466,18 @@ void AdicionaAoHistorico(struct historico** head, char current_player, int yleng
 int **tabela_atual){
 
 	struct historico *new_historico = (struct historico*) malloc(sizeof(struct historico));
+    /* if(new_historico==NULL){
+        printf("Erro na alocacao de memoria historico 1\n");
+    } */
 
 	struct historico *last = *head;
 
     /*****************************************************************/
-
-    new_historico->tabuleiro = (int**)malloc(sizeof(int*)*xlenght);
+    //IGUAL A CRIAR UM TABULEIRO PELA PRIMEIRA VEZ NO MAIN
+    new_historico->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
     if (new_historico->tabuleiro!=NULL){
         for (int i = 0; i<ylenght; i++){
-            new_historico->tabuleiro[i] = (int*)malloc(sizeof(int)*ylenght);
+            new_historico->tabuleiro[i] = (int*)malloc(sizeof(int)*xlenght);
         }
     }
     else{
@@ -632,7 +635,7 @@ int main(){
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5), numeroRondas=0;
 
-    tamanhoInicial = 5;
+    tamanhoInicial = 4;
 
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida, ModoJogo;
     int **tabuleiro;
@@ -715,36 +718,36 @@ int main(){
             scanf("%20s",NomeFicheiro);
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
-        numeroRondas++;
-    } 
+        numeroRondas++; 
+    }
 
 
-    /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    //printTabuleiro(ylenght,xlenght,tabuleiro);
+    
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+    changeTabuleiro(tabuleiro,3,4,0,current_player,&nPedrasA,&nPedrasB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+    changeTabuleiro(tabuleiro,3,3,0,current_player,&nPedrasA,&nPedrasB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+    changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+    changeTabuleiro(tabuleiro,0,0,1,current_player,&nPedrasA,&nPedrasB);
     printTabuleiro(ylenght,xlenght,tabuleiro);
-    
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
-    changeTabuleiro(tabuleiro,3,2,0,current_player,&nPedrasA,&nPedrasB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
-
-    
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
-    changeTabuleiro(tabuleiro,4,2,0,current_player,&nPedrasA,&nPedrasB);
-    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
-
+    printTabuleiro(ylenght,xlenght,tabuleiro);
 
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
-    changeTabuleiro(tabuleiro,5,2,0,current_player,&nPedrasA,&nPedrasB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
-
-
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
-    changeTabuleiro(tabuleiro,6,0,0,current_player,&nPedrasA,&nPedrasB);
-    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
-
 
     printf("\n-------------------");
-    PrintHistorico(head, 4);
-    printf("-------------------\n"); */
+    PrintHistorico(head, 9);
+    printf("-------------------\n");
 
     
 }
