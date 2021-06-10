@@ -270,8 +270,9 @@ void InicializaTabuleiro(int ylenght ,int xlenght,int **tab){
 }
 
 char Input1(char current_player, int nPedrasA, int nPedrasB, int nAumentosA, int nAumentosB){
+    printf("INPUT1\n");
     //devolve U ou P ou A ou J
-    int loop_escolha;
+    int loop_escolha=1;
     char escolha;
 
     printf("Vez do jogador %c\n",current_player);
@@ -328,7 +329,7 @@ void Input3(struct historico* head, int *xlenght, int *ylenght, int numeroRondas
 
         fflush(stdin);
         scanf("%d",&k);
-        if(k>=0 && k<=numeroRondas){
+        if(k>=0 /* && k<=numeroRondas */){ //não permite q o numero de jogadas q pretende visualizar seja maior do q as já jogadas
             PrintHistorico(head,k);
             loop_ultimas = 0;
         }
