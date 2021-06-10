@@ -631,7 +631,7 @@ int main(){
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5), numeroRondas=0;
 
-    tamanhoInicial = 3;
+    tamanhoInicial = 5;
 
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida, ModoJogo;
     int **tabuleiro;
@@ -660,7 +660,7 @@ int main(){
     changeTabuleiro(tabuleiro,0,2,0);
     AdicionaAoHistorico(&head,'A',3,3,tabuleiro); */
 
-    /* do{
+    do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
         fflush(stdin);
         scanf("%d",&ModoJogo);
@@ -715,10 +715,10 @@ int main(){
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
         numeroRondas++;
-    }  */ 
+    } 
 
 
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     printTabuleiro(ylenght,xlenght,tabuleiro);
     
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
@@ -743,7 +743,7 @@ int main(){
 
     printf("\n-------------------");
     PrintHistorico(head, 4);
-    printf("-------------------\n");
+    printf("-------------------\n"); */
 
     
 }
