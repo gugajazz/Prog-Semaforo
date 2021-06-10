@@ -214,11 +214,14 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, cha
         }
 
         (*xlenght)++;
-        if(current_player='A'){
+        printf("\ncurrent player: %c\n",current_player);
+        if(current_player=='A'){
             (*nAumentosA)++;
+            printf("GGGGG");
         }
-        else{
+        else if(current_player=='B'){
             (*nAumentosB)++;
+            printf("FFFFFF");
         }
         return tabuleiro;
     }
@@ -635,7 +638,7 @@ int main(){
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5), numeroRondas=0;
 
-    tamanhoInicial = 4;
+    //tamanhoInicial = 4;
 
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida, ModoJogo;
     int **tabuleiro;
@@ -656,13 +659,6 @@ int main(){
         printf("Erro na alocacao de memoria g1\n");
     }
     
-    /*InicializaTabuleiro(ylenght,xlenght,tabuleiro);
-    changeTabuleiro(tabuleiro,0,0,0);
-    AdicionaAoHistorico(&head,'A',3,3,tabuleiro);
-    changeTabuleiro(tabuleiro,0,1,0);
-    AdicionaAoHistorico(&head,'B',3,3,tabuleiro);
-    changeTabuleiro(tabuleiro,0,2,0);
-    AdicionaAoHistorico(&head,'A',3,3,tabuleiro); */
 
     do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
@@ -722,7 +718,7 @@ int main(){
     }
 
 
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     //printTabuleiro(ylenght,xlenght,tabuleiro);
     
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
@@ -747,7 +743,7 @@ int main(){
 
     printf("\n-------------------");
     PrintHistorico(head, 9);
-    printf("-------------------\n");
+    printf("-------------------\n"); */
 
     
 }
