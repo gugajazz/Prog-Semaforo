@@ -522,14 +522,84 @@ void dog(){
     lista=lista->next;
     printf("\n--->%d",lista->xlenght);
 
-    //printf("--->%d",lista->tabuleiro[0][0]);
-    /*printf("--->%d",lista->tabuleiro[1][0]);
-    printf("--->%d",lista->tabuleiro[2][0]);
-    lista=lista->next;
-    printf("\n--->%d",lista->tabuleiro[0][0]);
-    printf("--->%d",lista->tabuleiro[1][0]);
-    printf("--->%d",lista->tabuleiro[2][0]); */
-    //PrintHistorico(lista, 9);
+}
+
+void write_bin(struct historico *head){
+    FILE *fp = fopen ("jogo.bin","wb");
+
+    while(head!=NULL){
+        fprintf(fp, "%c%d%d",head->current_player,head->ylenght,head->xlenght);
+        for(int i=0; i<head->ylenght; i++){
+            for(int j=0; j<head->xlenght; j++){
+                fprintf(fp,"%d",head->tabuleiro[i][j]);
+            }
+            fprintf(fp,"K");
+        }
+        fprintf(fp,"X");
+        head = head->next;
+    }
+    
+    fclose (fp);
+}
+
+void read_bin(int ylenght, int xlenght){
+    struct historico *FromFile = (struct historico*) malloc(sizeof(struct historico));
+
+    FromFile->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
+    if (FromFile->tabuleiro!=NULL){
+        for (int i = 0; i<ylenght; i++){
+            FromFile->tabuleiro[i] = (int*)malloc(sizeof(int)*xlenght);
+        }
+    }
+    else{
+        printf("Erro na alocacao de memoria hh1\n");
+    }
+
+    FILE *fp = fopen("jogo.bin", "rb");
+
+    fseek(fp, 0, SEEK_END);
+    long tamanho = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    printf("\ntamanho=%d\n",tamanho);
+    char *temp = malloc(tamanho + 1);
+    fread(temp, 1, tamanho, fp);
+    temp[tamanho]='\0';
+    printf("%s\n",temp);
+    fclose (fp);
+
+    int i;
+    for(i=0;temp[i]!='X';i++){}
+    printf("i:%d\n\n",i); //tamanho da string até ao primeiro X (uma jogada)
+
+    for(int j=3, l=0, c=0;j<i-1;j++){
+        if(temp[j]=='K'){
+            //printf("\n");
+            c=0;
+            j++;
+            l++;
+        }
+        
+        printf("%d %d\n",l,c);
+        FromFile->tabuleiro[l][c]=temp[j] - '0';
+        //printf("%c",temp[j]);
+        c++;
+    }
+
+    printf("\n\n");
+    for(int i=0;i<5;i++){
+        for(int j=0;j<4;j++){
+            printf("%d ",FromFile->tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+
+    FromFile->current_player = temp[0];
+    FromFile->ylenght = temp[1] - '0'; // char - '0' resulta no int correspondente
+    FromFile->xlenght = temp[2] - '0';
+
+    //printf("\n\n%c %d %d",FromFile->current_player,FromFile->ylenght,FromFile->xlenght);
+    //printf("tamanho 1 jogada=%d",3+ylenght*xlenght);
+    //printf("\ntamanho 1 jogada=%d",3+(5*5));
 }
 
 char randomPlayer(int ylenght ,int xlenght,int **tabuleiro, char current_player,int nAumentosA, int nAumentosB, int nPedrasA, int nPedrasB){
@@ -588,7 +658,7 @@ int main(){
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5), numeroRondas=0;
 
-    //tamanhoInicial = 4;
+    tamanhoInicial = 4;
 
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida, ModoJogo;
     int **tabuleiro;
@@ -610,7 +680,7 @@ int main(){
     }
     
 
-    do{
+    /* do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
         fflush(stdin);
         scanf("%d",&ModoJogo);
@@ -671,10 +741,10 @@ int main(){
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
         numeroRondas++; 
-    }
+    } */
 
 
-    /*InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     //printTabuleiro(ylenght,xlenght,tabuleiro);
     
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
@@ -692,13 +762,21 @@ int main(){
 
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
-     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     
     changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
     changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
     changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
 
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+
+    PrintHistorico(head,9);
+    write_bin(head);
+    read_bin(ylenght,xlenght);
+
+
+
+
     /* changeTabuleiro(tabuleiro,3,3,0,current_player,&nPedrasA,&nPedrasB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
