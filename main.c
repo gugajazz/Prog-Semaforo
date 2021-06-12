@@ -34,7 +34,27 @@ void printTabuleiro(int ylenght ,int xlenght,int **tab){
             if(x==0){
                 printf("y%d  | ",y);
             }
-            printf(" %d | ",tab[y][x]);
+            switch(tab[y][x]){
+            case 0:
+                printf("   | ");
+                break;
+            case 1:
+                printf(" G | ");
+                break;
+            case 2:
+                printf(" Y | ");
+                break;
+            case 3:
+                printf(" R | ");
+                break;
+            case 4:
+                printf(" S | ");
+                break;
+            
+            default:
+                break;
+            }
+            //printf(" %d | ",tab[y][x]);
         }
 
         printf("\n     ");
@@ -214,14 +234,14 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, cha
         }
 
         (*xlenght)++;
-        printf("\ncurrent player: %c\n",current_player);
+        //printf("\ncurrent player: %c\n",current_player);
         if(current_player=='A'){
             (*nAumentosA)++;
-            printf("GGGGG");
+            //printf("GGGGG");
         }
         else if(current_player=='B'){
             (*nAumentosB)++;
-            printf("FFFFFF");
+            //printf("FFFFFF");
         }
         return tabuleiro;
     }
@@ -566,26 +586,24 @@ void SaveState(struct historico *head){
     fclose(fp); 
 }
 
-void ReadState(int ylenght,int xlenght){
+void ReadState(){
     struct historico *FromFile = (struct historico*) malloc(sizeof(struct historico));
     FILE *fp = fopen("jogo.bin", "rb");
 
-    fread(FromFile, sizeof(struct historico), 1, fp);
-    while(FromFile!=NULL){
-        
-        printf("x = %d\ny = %d\nplayer:%c\n", FromFile->xlenght, FromFile->ylenght,FromFile->current_player);
-        
-        for(int i=0;i<FromFile->ylenght;i++){
-            for(int j=0;j<FromFile->xlenght;j++){
-                printf("%d ",FromFile->tabuleiro[i][j]);
-            }   
-            printf("\n");
-        }
-        printf("\n");
-        FromFile = FromFile->next;
+    if(fp==NULL){
+        printf("Fopen deu NULL\n");
     }
 
+    int i=0;
+    while(FromFile!=NULL){ 
+        //struct historico *FromFile = (struct historico*) malloc(sizeof(struct historico));
+        FromFile=FromFile->next;
+    }
+    
     fclose(fp);
+
+    printf("dass");
+    //PrintHistorico(FromFile,9);
 }
 
 void randomPlayer(int ylenght ,int xlenght,int **tabuleiro, char current_player,int nAumentosA, int nAumentosB, int nPedrasA, int nPedrasB){
@@ -638,7 +656,7 @@ int main(){
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5), numeroRondas=0;
 
-    //tamanhoInicial = 4;
+    tamanhoInicial = 4;
 
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida, ModoJogo;
     int **tabuleiro;
@@ -660,7 +678,7 @@ int main(){
     }
     
 
-    do{
+    /* do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
         fflush(stdin);
         scanf("%d",&ModoJogo);
@@ -715,35 +733,47 @@ int main(){
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
         numeroRondas++; 
-    }
+    } */
 
 
-    /* InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     //printTabuleiro(ylenght,xlenght,tabuleiro);
     
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
-    changeTabuleiro(tabuleiro,3,4,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,0,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,0,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,0,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,3,1,current_player,&nPedrasA,&nPedrasB);
+
+    
+
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
-    changeTabuleiro(tabuleiro,3,3,0,current_player,&nPedrasA,&nPedrasB);
+    /* changeTabuleiro(tabuleiro,3,3,0,current_player,&nPedrasA,&nPedrasB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
     changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
     changeTabuleiro(tabuleiro,0,0,1,current_player,&nPedrasA,&nPedrasB);
-    printTabuleiro(ylenght,xlenght,tabuleiro);
-    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
-    printTabuleiro(ylenght,xlenght,tabuleiro);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro); */
 
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+    
+    printTabuleiro(ylenght,xlenght,tabuleiro);
+    //printf("\n-------------------");
+    //PrintHistorico(head, 9);
+    //printf("\n-------------------\n"); 
 
-    printf("\n-------------------");
-    PrintHistorico(head, 9);
-    printf("-------------------\n"); */
+    //SaveState(head);
+    //ReadState();
+    //printf("FFF");
 
     
 }
