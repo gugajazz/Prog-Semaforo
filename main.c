@@ -369,13 +369,9 @@ char Input4(){
         fflush(stdin);
         scanf("%c",&escolhaResize);
         if(escolhaResize=='C'){
-            //tabuleiro = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'X',current_player,&nAumentosA,&nAumentosB);
-            //InicializaTabuleiro(*ylenght,*xlenght,tabuleiro);
             return escolhaResize;
         }
         else if(escolhaResize=='L'){
-            //tabuleiro = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'Y',current_player,&nAumentosA,&nAumentosB);
-            //InicializaTabuleiro(*ylenght,*xlenght,tabuleiro);
             return escolhaResize;
         }
         else{
@@ -383,102 +379,6 @@ char Input4(){
         }
         
     }
-}
-
-int GetInput(int *xPosition, int *yPosition,char current_player, int **tabuleiro, int *xlenght, int *ylenght, struct historico* head, int nAumentosA, int nAumentosB, int *nPedrasA, int *nPedrasB){
-
-    char escolha, escolhaResize;
-    int loop_escolha=1, loop_resize=1, loop_jogar=1, loop_changeTabuleiro=1, loop_ultimas=1;
-    printf("Vez do jogador %c\n",current_player);
-    while(loop_escolha){
-        printf("\nPretende ver as ultimas jogadas (U), colocar uma pedra (P), aumentar o tabuleiro (A) ou jogar(J)?:");
-        fflush(stdin);
-        scanf("%c",&escolha);
-        if(escolha=='P' || escolha=='A' || escolha=='J' || escolha=='U'){
-            loop_escolha=0;
-        }
-        else{
-            printf("\nEscolha apenas entre U, P, A ou J");
-        }
-    }
-
-    if(escolha=='P'){
-        loop_changeTabuleiro=1;
-        //printf("pedrasA=%d pedrasB=%d\n",*nPedrasA,*nPedrasB);
-        if(current_player=='A' && *nPedrasA>=1){
-            printf("Numero maximo de pedras excedido\n");
-            return 1;
-        }
-
-        if(current_player=='B' && *nPedrasB>=1){
-            printf("Numero maximo de pedras excedido\n");
-            return 1;
-        }
-
-        while(loop_changeTabuleiro){
-            printf("Escolha a posicao da pedra (x y): ");
-            fflush(stdin);
-            scanf("%d %d",xPosition,yPosition);
-
-            if(*xPosition>=*xlenght || *yPosition>=*ylenght || *xPosition<0 || *yPosition<0){
-                printf("Posicao Invalida\n");
-                return 1;
-            }
-            loop_changeTabuleiro = changeTabuleiro(tabuleiro,*xPosition,*yPosition,1,current_player,nPedrasA,nPedrasB);
-        }
-        return 0;
-    }
-
-    else if(escolha=='A'){
-        //while(tabuleiro){
-            printf("Pretende aumentar uma linha (L) ou coluna (C)?:");
-            fflush(stdin);
-            scanf("%c",&escolhaResize);
-            if(escolhaResize=='C'){
-                tabuleiro = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'X',current_player,&nAumentosA,&nAumentosB);
-                InicializaTabuleiro(*ylenght,*xlenght,tabuleiro);
-                return 0;
-            }
-            else if(escolhaResize=='L'){
-                tabuleiro = ResizeTabuleiro(ylenght,xlenght,tabuleiro,'Y',current_player,&nAumentosA,&nAumentosB);
-                InicializaTabuleiro(*ylenght,*xlenght,tabuleiro);
-                return 0;
-            }
-            else{
-                printf("Escolha apenas entre L ou C\n");
-            }
-            
-        //}
-    }
-
-    else if(escolha=='U'){
-        int k;
-        while(loop_ultimas){
-            printf("Indique o numero de jogadas anteriores que pretende visualisar:");
-            fflush(stdin);
-            scanf("%d",&k);
-            if(k>0){
-                PrintHistorico(head,k);
-                loop_ultimas = 0;
-            }
-        }
-    }
-
-    else{
-        while(loop_jogar){
-            printf("Escolha a posicao em que quer jogar (x y): ");
-            fflush(stdin);
-            scanf("%d %d",xPosition,yPosition);
-
-            if(*xPosition>=*xlenght || *yPosition>=*ylenght || *xPosition<0 || *yPosition<0){
-                printf("Posicao Invalida\n");
-            }
-            else{
-                loop_jogar = changeTabuleiro(tabuleiro,*xPosition,*yPosition,0,current_player,nPedrasA,nPedrasB);
-            }
-        }
-        return 0;
-    } 
 }
 
 void CriaTabuleiro(int ylenght ,int xlenght,int **tabuleiro){
@@ -492,9 +392,7 @@ int **tabela_atual){
     /* if(new_historico==NULL){
         printf("Erro na alocacao de memoria historico 1\n");
     } */
-
 	struct historico *last = *head;
-
     /*****************************************************************/
     //IGUAL A CRIAR UM TABULEIRO PELA PRIMEIRA VEZ NO MAIN
     new_historico->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
@@ -516,11 +414,7 @@ int **tabela_atual){
     new_historico->xlenght=xlenght;
     new_historico->ylenght=ylenght;
     new_historico->current_player=current_player;
-
-
-
     /*****************************************************************/
-
 	new_historico->next = NULL;
 
 	if (*head == NULL){
@@ -606,7 +500,39 @@ void ReadState(){
     //PrintHistorico(FromFile,9);
 }
 
-void randomPlayer(int ylenght ,int xlenght,int **tabuleiro, char current_player,int nAumentosA, int nAumentosB, int nPedrasA, int nPedrasB){
+void dog(){
+    FILE *fp;
+    struct historico *new_node,*curr,*lista, aux;
+    fp=fopen("jogo.bin","rb");
+    new_node=malloc(sizeof(struct historico));
+    fread(new_node,1,sizeof(struct historico),fp); //new_node e a cabeca da lista
+    new_node->next=NULL; 
+    lista=curr=new_node;
+    while(fread(&aux,sizeof(struct historico),1,fp)==1){ //enquanto conseguires ler para aux
+        new_node=malloc(sizeof(struct historico)); //alocas um novo
+        /* new_node->tabuleiro = mall */
+        *new_node=aux; //ele fica igual a aux
+        new_node->next=NULL; //pode ser o utilmo
+        curr->next=new_node; //o no anterior fica a apontar para o atual
+        curr=curr->next; //curr fica a apontar para o no k foi agr alocado 
+
+    }
+    
+    printf("--->%d",lista->xlenght);
+    lista=lista->next;
+    printf("\n--->%d",lista->xlenght);
+
+    //printf("--->%d",lista->tabuleiro[0][0]);
+    /*printf("--->%d",lista->tabuleiro[1][0]);
+    printf("--->%d",lista->tabuleiro[2][0]);
+    lista=lista->next;
+    printf("\n--->%d",lista->tabuleiro[0][0]);
+    printf("--->%d",lista->tabuleiro[1][0]);
+    printf("--->%d",lista->tabuleiro[2][0]); */
+    //PrintHistorico(lista, 9);
+}
+
+char randomPlayer(int ylenght ,int xlenght,int **tabuleiro, char current_player,int nAumentosA, int nAumentosB, int nPedrasA, int nPedrasB){
     initRandom();
     int output_change = 1, xpos, ypos, pedra, aumentar, coluna;
 
@@ -622,17 +548,23 @@ void randomPlayer(int ylenght ,int xlenght,int **tabuleiro, char current_player,
         pedra=0;
     }
 
-    if(pedra==0 && aumentar<=30){
+    if(pedra==0 && aumentar<=300){
         coluna = intUniformRnd(0, 1);
         if(coluna==1){
-            ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'X',current_player,&nAumentosA,&nAumentosB);
             printf("\nO computador aumentou uma linha no tabuleiro\n");
-            return;
+            return 'L';
+            /* printf("\nO computador aumentou uma linha no tabuleiro\n");
+            return ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB); */
+            //printf("\nO computador aumentou uma linha no tabuleiro\n");
+            //return tabuleiro;
         }
         else{
-            ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'Y',current_player,&nAumentosA,&nAumentosB);
             printf("\nO computador aumentou uma coluna no tabuleiro\n");
-            return;
+            return 'C';
+            /* printf("\nO computador aumentou uma coluna no tabuleiro\n");
+            return tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+            printf("\nO computador aumentou uma coluna no tabuleiro\n"); */
+            //return tabuleiro;
         }
     }
 
@@ -649,14 +581,14 @@ void randomPlayer(int ylenght ,int xlenght,int **tabuleiro, char current_player,
     else{
         printf("\nO computador jogou na posicao x%d y%d\n\n",xpos,ypos);
     }
-    
+    return 'X';
 }
 
 int main(){
     initRandom();
     int tamanhoInicial = intUniformRnd(3, 5), numeroRondas=0;
 
-    tamanhoInicial = 4;
+    //tamanhoInicial = 4;
 
     int ylenght=tamanhoInicial, xlenght=tamanhoInicial, posicao_valida, ModoJogo;
     int **tabuleiro;
@@ -678,7 +610,7 @@ int main(){
     }
     
 
-    /* do{
+    do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
         fflush(stdin);
         scanf("%d",&ModoJogo);
@@ -723,7 +655,13 @@ int main(){
             ChangeCurrentPlayer(&current_player);
         }
         else if(ModoJogo==1){
-            randomPlayer(ylenght, xlenght, tabuleiro,current_player,nAumentosA,nAumentosB,nPedrasA,nPedrasB);
+            char output;
+            output = randomPlayer(ylenght, xlenght, tabuleiro,current_player,nAumentosA,nAumentosB,nPedrasA,nPedrasB);
+            
+            if(output=='C' || output=='L'){
+                modoResize = output;
+                ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,modoResize,current_player,&nAumentosA,&nAumentosB);
+            }
         }
 
         if(playing==0){
@@ -733,14 +671,14 @@ int main(){
             exportFile(head, NomeFicheiro, ylenght, xlenght);
         }
         numeroRondas++; 
-    } */
+    }
 
 
-    InicializaTabuleiro(ylenght,xlenght,tabuleiro);
+    /*InicializaTabuleiro(ylenght,xlenght,tabuleiro);
     //printTabuleiro(ylenght,xlenght,tabuleiro);
     
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'L',current_player,&nAumentosA,&nAumentosB);
-    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+    //AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
     changeTabuleiro(tabuleiro,0,0,0,current_player,&nPedrasA,&nPedrasB);
     changeTabuleiro(tabuleiro,0,0,0,current_player,&nPedrasA,&nPedrasB);
@@ -754,6 +692,13 @@ int main(){
 
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
+     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    
+    changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
+    changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
+
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
     /* changeTabuleiro(tabuleiro,3,3,0,current_player,&nPedrasA,&nPedrasB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
@@ -763,15 +708,21 @@ int main(){
     changeTabuleiro(tabuleiro,0,0,1,current_player,&nPedrasA,&nPedrasB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro); */
 
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    /* tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro); */
     
-    printTabuleiro(ylenght,xlenght,tabuleiro);
+    //printTabuleiro(ylenght,xlenght,tabuleiro);
     //printf("\n-------------------");
     //PrintHistorico(head, 9);
     //printf("\n-------------------\n"); 
 
     //SaveState(head);
+    /* printf("\n-------------------\n"); 
+    dog();
+    printf("\n-------------------\n"); 
+    PrintHistorico(head, 9); */
     //ReadState();
     //printf("FFF");
 
