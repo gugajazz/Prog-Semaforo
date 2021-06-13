@@ -731,7 +731,7 @@ char randomPlayer(int ylenght ,int xlenght,int **tabuleiro,int nAumentosA, int n
     aumentar = intUniformRnd(0, 100);
 
 
-    if(pedra<=300 && nPedrasB<1){ //30% de prob de jogar uma pedra
+    if(pedra<=30 && nPedrasB<1){ //30% de prob de jogar uma pedra
         pedra=1;
     }
     else{
