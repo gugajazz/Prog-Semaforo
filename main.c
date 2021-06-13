@@ -17,7 +17,7 @@ struct historico{
 int ylenght, xlenght, nPedrasB, nPedrasA, nAumentosB, nAumentosA, current_player;
 
 
-void printTabuleiro(int **tab){
+void printTabuleiro(int **tab, int ylenght, int xlenght){ //tem q ter ylenght e xlenght pq é usada par printhistorico e ele usa head->ylenght
 
     for(int i=0;i<xlenght;i++){
         if(i==0){
@@ -84,7 +84,7 @@ void PrintHistorico(struct historico *head, int num_jogadas){
             printf("\n");
         } */
         printf("Jogada numero %d feita por %c\n",contador_jogadas,head->current_player);
-        printTabuleiro(head->tabuleiro);
+        printTabuleiro(head->tabuleiro,head->ylenght,head->xlenght);
         contador_jogadas++;
         //printf("%d -> ",head->data);
         head = head->next;
@@ -95,7 +95,7 @@ void PrintHistorico(struct historico *head, int num_jogadas){
     //printf("NULL");
 } 
 
-int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra, int *nPedrasA, int *nPedrasB){
+int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra/* , int *nPedrasA, int *nPedrasB */){
     if(pedra==1){
         if(tabuleiro[yPosition][xPosition]==4){ //verifica que não há uma pedra onde estamos a tentar por uma pedra
             printf("Ja exite uma pedra nessa posicao\n");
@@ -107,10 +107,10 @@ int changeTabuleiro(int **tabuleiro, int xPosition, int yPosition, int pedra, in
         }
         tabuleiro[yPosition][xPosition]=4;
         if(current_player=='A'){
-            (*nPedrasA)++;
+            (nPedrasA)++;
         }
         else{
-            (*nPedrasB)++;
+            (nPedrasB)++;
         }
         return 0;
     }
@@ -158,7 +158,7 @@ int checkForWinner(int **tabuleiro){
             }
 
             if(equal_straight==xlenght-1){
-                printTabuleiro(tabuleiro);
+                printTabuleiro(tabuleiro,ylenght,xlenght);
                 printf("PLAYER %c IS THE WINNER\n",current_player);
                 return 0;
             }
@@ -181,7 +181,7 @@ int checkForWinner(int **tabuleiro){
             printf("\n");
         
             if(equal_straight==ylenght-1){
-                printTabuleiro(tabuleiro);
+                printTabuleiro(tabuleiro,ylenght,xlenght);
                 printf("PLAYER %c IS THE WINNER\n",current_player);
                 return 0;
             }
@@ -202,7 +202,7 @@ int checkForWinner(int **tabuleiro){
                 }
             }
             if(equal_straight==xlenght-1){
-                printTabuleiro(tabuleiro);
+                printTabuleiro(tabuleiro,ylenght,xlenght);
                 printf("PLAYER %c IS THE WINNER\n",current_player);
                 return 0;
             }
@@ -220,7 +220,7 @@ int checkForWinner(int **tabuleiro){
                 }
             }
             if(equal_straight==xlenght-1){
-                printTabuleiro(tabuleiro);
+                printTabuleiro(tabuleiro,ylenght,xlenght);
                 printf("PLAYER %c IS THE WINNER\n",current_player);
                 return 0;
             }
@@ -364,7 +364,7 @@ void Input2(int **tabuleiro, int *nPedrasA, int *nPedrasB, int pedra){
                 printf("Posicao Invalida\n");
             }
             else{
-                loop_jogar = changeTabuleiro(tabuleiro,xPosition,yPosition,pedra,nPedrasA,nPedrasB);
+                loop_jogar = changeTabuleiro(tabuleiro,xPosition,yPosition,pedra);
             }
         }
 }
@@ -678,14 +678,14 @@ char randomPlayer(int ylenght ,int xlenght,int **tabuleiro,int nAumentosA, int n
     aumentar = intUniformRnd(0, 100);
 
 
-    if(pedra<=30){ //30% de prob de jogar uma pedra
+    if(pedra<=300 && nPedrasB<1){ //30% de prob de jogar uma pedra
         pedra=1;
     }
     else{
         pedra=0;
     }
 
-    if(pedra==0 && aumentar<=30){
+    if(pedra==0 && aumentar<=30 && nAumentosB<2){
         coluna = intUniformRnd(0, 1);
         if(coluna==1){
             printf("\nO computador aumentou uma linha no tabuleiro\n");
@@ -695,13 +695,14 @@ char randomPlayer(int ylenght ,int xlenght,int **tabuleiro,int nAumentosA, int n
             printf("\nO computador aumentou uma coluna no tabuleiro\n");
             return 'C';
         }
+        nAumentosB++;
     }
 
     do{
         xpos = intUniformRnd(0, xlenght-1);
         ypos = intUniformRnd(0, ylenght-1);
         //printf("y:%d x:%d",ypos,xpos);
-        output_change = changeTabuleiro(tabuleiro, xpos, ypos,pedra,&nPedrasA,&nPedrasB); //devolve 1 se for invalida
+        output_change = changeTabuleiro(tabuleiro, xpos, ypos,pedra); //devolve 1 se for invalida
     }while(output_change);
 
     if(pedra==1){
@@ -753,7 +754,7 @@ int main(){
     
     while(playing){         
         posicao_valida=1;
-        printTabuleiro(tabuleiro);
+        printTabuleiro(tabuleiro,ylenght,xlenght);
         
         modo = Input1(); // U, P, A ou J
         while(modo=='U' || modo=='u'){
