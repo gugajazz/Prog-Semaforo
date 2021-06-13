@@ -543,17 +543,6 @@ void write_bin(struct historico *head){
 }
 
 void read_bin(int ylenght, int xlenght){
-    struct historico *FromFile = (struct historico*) malloc(sizeof(struct historico));
-
-    FromFile->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
-    if (FromFile->tabuleiro!=NULL){
-        for (int i = 0; i<ylenght; i++){
-            FromFile->tabuleiro[i] = (int*)malloc(sizeof(int)*xlenght);
-        }
-    }
-    else{
-        printf("Erro na alocacao de memoria hh1\n");
-    }
 
     FILE *fp = fopen("jogo.bin", "rb");
 
@@ -567,13 +556,32 @@ void read_bin(int ylenght, int xlenght){
     printf("%s\n",temp);
     fclose (fp);
 
-    int i=0;
-    for(;temp[i]!='Z';i=i+1){
+    struct historico *(recuperado) = (struct historico*) malloc(sizeof(struct historico));
+
+    int i=0, pos_lista=0;
+    for(;temp[i]!='Z';i=i+1,pos_lista+=2){ //pos_lista mais dois pq deve haver um problema c a aloc de memoria e assim nao como o outro tabuleiro
+
         printf("++++%d\n",i);
         int posJ=i;
 
         for(;temp[i]!='X';i++){}
         printf("ate proximo X:%d\n\n",i); //tamanho da string até ao proximo X (uma jogada)
+
+        //int ylenght=   
+
+        (recuperado+pos_lista)->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
+        if (recuperado->tabuleiro!=NULL){
+            for (int i = 0; i<ylenght; i++){
+                (recuperado+pos_lista)->tabuleiro[i] = (int*)malloc(sizeof(int)*xlenght);
+            }
+        }
+        else{
+            printf("Erro na alocacao de memoria hh1\n");
+        }
+
+
+
+        
 
         for(int j=posJ+3, l=0, c=0; temp[j+1]!='X' ;j++){  //j=3 para saltar o jogador atual, ylenght e xlenght
             if(temp[j]=='K'){
@@ -584,7 +592,7 @@ void read_bin(int ylenght, int xlenght){
             }
             
             printf("%d %d\n",l,c);
-            FromFile->tabuleiro[l][c]=temp[j] - '0';
+            (recuperado+pos_lista)->tabuleiro[l][c]=temp[j] - '0';
             //printf("%c",temp[j]);
             c++;
         }
@@ -592,16 +600,32 @@ void read_bin(int ylenght, int xlenght){
         printf("\n\n");
         for(int i=0;i<5;i++){
             for(int j=0;j<4;j++){
-                printf("%d ",FromFile->tabuleiro[i][j]);
+                printf("%d ",(recuperado+pos_lista)->tabuleiro[i][j]);
             }
             printf("\n");
         }
     }
-    
 
-    FromFile->current_player = temp[0];
+    
+    printf("\n\n-------------------\n");
+        for(int i=0;i<5;i++){
+            for(int j=0;j<4;j++){
+                printf("%d ",(recuperado+0)->tabuleiro[i][j]);
+            }
+            printf("\n");
+    }
+
+    printf("\n\n");
+        for(int i=0;i<5;i++){
+            for(int j=0;j<4;j++){
+                printf("%d ",(recuperado+2)->tabuleiro[i][j]);
+            }
+            printf("\n");
+    }
+
+    /* FromFile->current_player = temp[0];
     FromFile->ylenght = temp[1] - '0'; // char - '0' resulta no int correspondente
-    FromFile->xlenght = temp[2] - '0';
+    FromFile->xlenght = temp[2] - '0'; */
 
     //printf("\n\n%c %d %d",FromFile->current_player,FromFile->ylenght,FromFile->xlenght);
     //printf("tamanho 1 jogada=%d",3+ylenght*xlenght);
@@ -768,7 +792,7 @@ int main(){
 
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
-    //tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     
     changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
     changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
@@ -779,6 +803,7 @@ int main(){
     PrintHistorico(head,9);
     write_bin(head);
     read_bin(ylenght,xlenght);
+    //read_bin(5,4);
 
 
 
