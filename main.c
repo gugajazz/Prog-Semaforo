@@ -538,7 +538,7 @@ void write_bin(struct historico *head){
         fprintf(fp,"X");
         head = head->next;
     }
-    
+    fprintf(fp,"Z");
     fclose (fp);
 }
 
@@ -567,31 +567,37 @@ void read_bin(int ylenght, int xlenght){
     printf("%s\n",temp);
     fclose (fp);
 
-    int i;
-    for(i=0;temp[i]!='X';i++){}
-    printf("i:%d\n\n",i); //tamanho da string até ao primeiro X (uma jogada)
+    int i=0;
+    for(;temp[i]!='Z';i=i+1){
+        printf("++++%d\n",i);
+        int posJ=i;
 
-    for(int j=3, l=0, c=0;j<i-1;j++){
-        if(temp[j]=='K'){
-            //printf("\n");
-            c=0;
-            j++;
-            l++;
-        }
-        
-        printf("%d %d\n",l,c);
-        FromFile->tabuleiro[l][c]=temp[j] - '0';
-        //printf("%c",temp[j]);
-        c++;
-    }
+        for(;temp[i]!='X';i++){}
+        printf("ate proximo X:%d\n\n",i); //tamanho da string até ao proximo X (uma jogada)
 
-    printf("\n\n");
-    for(int i=0;i<5;i++){
-        for(int j=0;j<4;j++){
-            printf("%d ",FromFile->tabuleiro[i][j]);
+        for(int j=posJ+3, l=0, c=0; temp[j+1]!='X' ;j++){  //j=3 para saltar o jogador atual, ylenght e xlenght
+            if(temp[j]=='K'){
+                //printf("\n");
+                c=0;
+                j++;
+                l++;
+            }
+            
+            printf("%d %d\n",l,c);
+            FromFile->tabuleiro[l][c]=temp[j] - '0';
+            //printf("%c",temp[j]);
+            c++;
         }
-        printf("\n");
+
+        printf("\n\n");
+        for(int i=0;i<5;i++){
+            for(int j=0;j<4;j++){
+                printf("%d ",FromFile->tabuleiro[i][j]);
+            }
+            printf("\n");
+        }
     }
+    
 
     FromFile->current_player = temp[0];
     FromFile->ylenght = temp[1] - '0'; // char - '0' resulta no int correspondente
@@ -762,7 +768,7 @@ int main(){
 
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
-    tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
+    //tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
     
     changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
     changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
