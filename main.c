@@ -88,7 +88,7 @@ void PrintHistorico(struct historico *head, int num_jogadas){
         contador_jogadas++;
         //printf("%d -> ",head->data);
         head = head->next;
-        num_jogadas--;
+        //num_jogadas--;
     }
     printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 
@@ -459,7 +459,9 @@ void AdicionaAoHistorico(struct historico** head, int **tabela_atual){
 
 void exportFile(struct historico *head, char NomeFicheiro[50]){
 
-    int m=0;
+    int m=0, contador_jogadas=1;
+    char winner;
+
     do{
         m++;
     }while(NomeFicheiro[m]!='\0');
@@ -468,27 +470,78 @@ void exportFile(struct historico *head, char NomeFicheiro[50]){
     NomeFicheiro[m+2]='x';
     NomeFicheiro[m+3]='t';
     NomeFicheiro[m+4]='\0';
-    //printf("%s",NomeFicheiro);
 
     FILE *fp;
     fp = fopen (NomeFicheiro,"w");
 
-    fprintf (fp, "Tisss b line\n");
+    fprintf(fp,"\n+-+-+-+-+-+-+-HISTORICO-+-+-+-+-+-+-+-+\n\n");
+
 
     while(head!=NULL){
-        fprintf(fp, "Current player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
-        fprintf(fp, "Table:\n");
-        for(int i=0; i<ylenght; i++){
-            for(int j=0; j<xlenght; j++){
-                fprintf(fp,"%d ",head->tabuleiro[i][j]);
+
+        fprintf(fp, "Jogada numero %d feita por %c\n",contador_jogadas,head->current_player);
+
+        for(int i=0;i<head->xlenght;i++){
+            if(i==0){
+                fprintf(fp,"      x%d",i);
+            }
+            else{
+                fprintf(fp,"   x%d",i);
+            }
+        }
+
+        fprintf(fp,"\n     ");
+            for(int i=0;i<head->xlenght*5;i++){
+                fprintf(fp,"-");
+            }
+            fprintf(fp,"\n");
+
+        for(int y=0;y<head->ylenght;y++){
+            for(int x=0;x<head->xlenght;x++){
+                if(x==0){
+                    fprintf(fp,"y%d  | ",y);
+                }
+                switch(head->tabuleiro[y][x]){
+                case 0:
+                    fprintf(fp,"   | ");
+                    break;
+                case 1:
+                    fprintf(fp," G | ");
+                    break;
+                case 2:
+                    fprintf(fp," Y | ");
+                    break;
+                case 3:
+                    fprintf(fp," R | ");
+                    break;
+                case 4:
+                    fprintf(fp," S | ");
+                    break;
+                
+                default:
+                    break;
+                }
+                //printf(" %d | ",tab[y][x]);
+            }
+
+            fprintf(fp,"\n     ");
+            for(int i=0;i<head->xlenght*5;i++){
+                fprintf(fp,"-");
             }
             fprintf(fp,"\n");
         }
         fprintf(fp,"\n");
-        //printf("%d -> ",head->data);
-        head = head->next;
+
+
+            contador_jogadas++;
+            //printf("%d -> ",head->data);
+            winner=head->current_player;
+            head = head->next;
     }
-    
+
+    //printf("%c",head->current_player);
+    fprintf(fp,"!!! O JOGADOR '%c' VENCEU !!!\n\n",winner);
+    fprintf(fp,"+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
     fclose (fp);
 
 }
@@ -785,7 +838,7 @@ int main(){
             ChangeCurrentPlayer();
         }
 
-        else if(ModoJogo==1){ //contra um bot
+        else if(ModoJogo==1 && playing==1){ //contra um bot
             ChangeCurrentPlayer(); //dentro dos dois changecurrentplayer o bot joga com o "B"
             char output;
             output = randomPlayer(ylenght, xlenght, tabuleiro,nAumentosA,nAumentosB,nPedrasA,nPedrasB);
@@ -802,7 +855,7 @@ int main(){
         }
 
         if(playing==0){
-            printf("\nIndique o nome do ficheiro por favor: ");
+            printf("\nIndique o nome do ficheiro por favor (sem a extensao): ");
             fflush(stdin);
             scanf("%20s",NomeFicheiro);
             exportFile(head, NomeFicheiro);
