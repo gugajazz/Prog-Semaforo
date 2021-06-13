@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "utils.h"
 
+
 struct historico{
     int xlenght;
     int ylenght;
@@ -316,25 +317,25 @@ char Input1(){
         printf("\nindique o que pretende:\n\tVer as ultimas jogadas (U)\n\tColocar uma pedra (P),\n\tAumentar o tabuleiro (A)\n\tJogar(J)\n\tSair(S)\n\t-> ");
         fflush(stdin);
         scanf("%c",&escolha);
-        if(escolha=='P' || escolha=='A' || escolha=='J' || escolha=='U'){
+        if(escolha=='P' || escolha=='A' || escolha=='J' || escolha=='U' || escolha=='p' || escolha=='a' || escolha=='j' || escolha=='u'){
             //printf("****%c %c %d\n",escolha,current_player,nPedrasA);
-            if(escolha=='P' && current_player=='A' && nPedrasA>=1){
+            if(escolha=='P' || escolha=='p' && current_player=='A' && nPedrasA>=1){
                 printf("Ja utilizou todas as pedras disponiveis\n");
             }
-            else if(escolha=='P' && current_player=='B' && nPedrasB>=1){
+            else if(escolha=='P' || escolha=='p' && current_player=='B' && nPedrasB>=1){
                 printf("Ja utilizou todas as pedras disponiveis\n");
             }
-            else if(escolha=='A' && current_player=='A' && nAumentosA>=2){
+            else if(escolha=='A' || escolha=='a' && current_player=='A' && nAumentosA>=2){
                 printf("Ja utilizou todos os aumentos disponiveis\n");
             }
-            else if(escolha=='A' && current_player=='B' && nAumentosB>=2){
+            else if(escolha=='A' || escolha=='a' && current_player=='B' && nAumentosB>=2){
                 printf("Ja utilizou todos os aumentos disponiveis\n");
             }
             else{ //se nao houver nenhuma restricao que se aplique sair e devolver a escolha
                 loop_escolha=0;
             } 
         }
-        else if(escolha=='S'){
+        else if(escolha=='S' || escolha=='s'){
             printf("\n");
             exit(0);
         }
@@ -364,16 +365,17 @@ void Input2(int **tabuleiro, int *nPedrasA, int *nPedrasB, int pedra){
 void Input3(struct historico* head, int *xlenght, int *ylenght, int numeroRondas){
     int k,loop_ultimas;
     while(loop_ultimas){
-        printf("Indique o numero de jogadas anteriores que pretende visualisar:");
+        printf("Numero de jogadas decorridas -> %d\n",numeroRondas);
+        printf("Indique o numero de jogadas anteriores que pretende visualisar: ");
 
         fflush(stdin);
         scanf("%d",&k);
-        if(k>=0 /* && k<=numeroRondas */){ //não permite q o numero de jogadas q pretende visualizar seja maior do q as já jogadas
+        if(k>=0 && k<=numeroRondas){ //não permite q o numero de jogadas q pretende visualizar seja maior do q as já jogadas
             PrintHistorico(head,k);
             loop_ultimas = 0;
         }
         else{
-            printf("Valor incorreto\n");
+            printf("Indique um numero menor ou igual as jogadas decorridas\n");
         }
     }
 }
@@ -384,10 +386,12 @@ char Input4(){
         printf("Pretende aumentar uma linha (L) ou coluna (C)?:");
         fflush(stdin);
         scanf("%c",&escolhaResize);
-        if(escolhaResize=='C'){
+        if(escolhaResize=='C' || escolhaResize=='c'){
+            escolhaResize='C';
             return escolhaResize;
         }
-        else if(escolhaResize=='L'){
+        else if(escolhaResize=='L' || escolhaResize=='l'){
+            escolhaResize='L';
             return escolhaResize;
         }
         else{
@@ -745,21 +749,21 @@ int main(){
         printTabuleiro(tabuleiro);
         
         modo = Input1(); // U, P, A ou J
-        while(modo=='U'){
+        while(modo=='U' || modo=='u'){
             printf("\n"); //se remover n corre o input
             Input3(head,&xlenght,&ylenght,numeroRondas);
             modo = Input1(); // U, P, A ou J
         }
 
-        if(modo=='J'){
+        if(modo=='J' || modo=='j'){
             printf("\n"); //se remover n corre o input
             Input2(tabuleiro,&nPedrasA,&nPedrasB,0);
         }
-        else if(modo=='P'){
+        else if(modo=='P' || modo=='p'){
             printf("\n"); //se remover n corre o input
             Input2(tabuleiro,&nPedrasA,&nPedrasB,1);
         }
-        else if(modo=='A'){
+        else if(modo=='A' || modo=='a'){
             printf("\n"); //se remover n corre o input
             modoResize = Input4();
             tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,modoResize,&nAumentosA,&nAumentosB);
