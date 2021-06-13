@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "utils.h"
 
-
 struct historico{
     int xlenght;
     int ylenght;
@@ -25,6 +24,13 @@ struct dados_jogo{
 
 struct dados_jogo jg;
 
+void clear_buffer(){
+    int i;
+    do{
+        i = getchar();
+    }while ( i != '\n' && i != EOF );
+    return;
+}
 
 void printTabuleiro(int **tab, int ylenght, int xlenght){ //tem q ter ylenght e xlenght pq é usada par printhistorico e ele usa head->ylenght
 
@@ -320,7 +326,8 @@ char Input1(){
 
     while(loop_escolha){
         printf("\nindique o que pretende:\n\tVer as ultimas jogadas (U)\n\tColocar uma pedra (P),\n\tAumentar o tabuleiro (A)\n\tJogar(J)\n\tSair(S)\n\t-> ");
-        fflush(stdin);
+        //fflush(stdin);
+        clear_buffer();
         scanf("%c",&escolha);
         if(escolha=='P' || escolha=='A' || escolha=='J' || escolha=='U' || escolha=='p' || escolha=='a' || escolha=='j' || escolha=='u'){
             //printf("****%c %c %d\n",escolha,current_player,nPedrasA);
@@ -355,7 +362,8 @@ void Input2(int **tabuleiro, int *nPedrasA, int *nPedrasB, int pedra){
     int loop_jogar,xPosition,yPosition;
     while(loop_jogar){
             printf("Escolha a posicao em que quer jogar (x y): ");
-            fflush(stdin);
+            //fflush(stdin);
+            clear_buffer();
             scanf("%d %d",&xPosition,&yPosition);
 
             if(xPosition>=jg.xlenght || yPosition>=jg.ylenght || xPosition<0 || yPosition<0){
@@ -373,7 +381,8 @@ void Input3(struct historico* head, int *xlenght, int *ylenght, int numeroRondas
         printf("Numero de jogadas decorridas -> %d\n",numeroRondas);
         printf("Indique o numero de jogadas anteriores a visualisar: ");
 
-        fflush(stdin);
+        //fflush(stdin);
+        clear_buffer();
         scanf("%d",&k);
         if(k>=0 && k<=numeroRondas){ //não permite q o numero de jogadas q pretende visualizar seja maior do q as já jogadas
             PrintHistorico(head,k);
@@ -389,7 +398,8 @@ char Input4(){
     char escolhaResize;
     while(1){
         printf("Pretende aumentar uma linha (L) ou coluna (C)?:");
-        fflush(stdin);
+        //fflush(stdin);
+        clear_buffer();
         scanf("%c",&escolhaResize);
         if(escolhaResize=='C' || escolhaResize=='c'){
             escolhaResize='C';
@@ -793,7 +803,7 @@ int main(){
     
     do{
         printf("Escolha entre 1 ou 2 jogadores '1' ou '2': ");
-        fflush(stdin);
+        //fflush(stdin);
         scanf("%d",&ModoJogo);
         printf("\n");
     }while(ModoJogo!=1 && ModoJogo!=2);
@@ -851,7 +861,8 @@ int main(){
 
         if(playing==0){
             printf("\nIndique o nome do ficheiro por favor (sem a extensao): ");
-            fflush(stdin);
+            //fflush(stdin);
+            clear_buffer();
             scanf("%20s",NomeFicheiro);
             exportFile(head, NomeFicheiro);
         }

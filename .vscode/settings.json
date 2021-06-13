@@ -2,6 +2,8 @@
     "files.associations": {
         "stdio.h": "c",
         "main.c": "c",
-        "MAIN.C": "c"
+        "MAIN.C": "c",
+        "stdlib.h": "c",
+        "inputs.h": "c"
     }
 }
