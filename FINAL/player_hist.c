@@ -1,3 +1,7 @@
+// Trabalho Pratico Programacao - LEI
+// DEIS-ISEC 2020-2021
+//Gustavo Mateus 2020138902
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "player_hist.h"
@@ -104,9 +108,7 @@ int checkForWinner(int **tabuleiro){
 void AdicionaAoHistorico(struct historico** head, int **tabela_atual){
 
 	struct historico *new_historico = (struct historico*) malloc(sizeof(struct historico));
-    /* if(new_historico==NULL){
-        printf("Erro na alocacao de memoria historico 1\n");
-    } */
+
 	struct historico *last = *head;
     /*****************************************************************/
     //IGUAL A CRIAR UM TABULEIRO PELA PRIMEIRA VEZ NO MAIN
@@ -149,7 +151,7 @@ void AdicionaAoHistorico(struct historico** head, int **tabela_atual){
 void PrintHistorico(struct historico *head, int num_jogadas){
     int contador_jogadas=1;
     printf("\n+-+-+-+-+-+-+-HISTORICO-+-+-+-+-+-+-+-+\n\n");
-    while(head!=NULL && num_jogadas>0){ //tirar o comentario para so mostrar o num de jogadas pedidas
+    while(head!=NULL && num_jogadas>0){
         printf("Jogada numero %d feita por %c\n",contador_jogadas,head->current_player);
         printTabuleiro(head->tabuleiro,head->ylenght,head->xlenght);
         contador_jogadas++;

@@ -1,3 +1,7 @@
+// Trabalho Pratico Programacao - LEI
+// DEIS-ISEC 2020-2021
+//Gustavo Mateus 2020138902
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "tabuleiro.h"
@@ -46,7 +50,6 @@ void printTabuleiro(int **tab, int ylenght, int xlenght){ //tem q ter ylenght e 
             default:
                 break;
             }
-            //printf(" %d | ",tab[y][x]);
         }
 
         printf("\n     ");
@@ -115,14 +118,11 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, int
         }
 
         (*xlenght)++;
-        //printf("\ncurrent player: %c\n",current_player);
         if(jg.current_player=='A'){
             (*nAumentosA)++;
-            //printf("GGGGG");
         }
         else if(jg.current_player=='B'){
             (*nAumentosB)++;
-            //printf("FFFFFF");
         }
         return tabuleiro;
     }
@@ -164,12 +164,10 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, int
 void InicializaTabuleiro(int **tab){
     for(int i=0;i<jg.ylenght;i++){
         for(int j=0;j<jg.xlenght;j++){
-            //printf("%d y=%d x=%d\n",tab[i][j],i,j);
             if(tab[i][j]!=0 && tab[i][j]!=1 && tab[i][j]!=2 && tab[i][j]!=3 && tab[i][j]!=4){
                 tab[i][j]=0;
             }
         }
-        //printf("\n");
     }
 }
 

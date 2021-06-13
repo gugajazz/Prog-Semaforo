@@ -1,3 +1,7 @@
+// Trabalho Pratico Programacao - LEI
+// DEIS-ISEC 2020-2021
+//Gustavo Mateus 2020138902
+
 #ifndef TABULEIRO_H
 #define TABULEIRO_H
 

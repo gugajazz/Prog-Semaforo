@@ -1,3 +1,7 @@
+// Trabalho Pratico Programacao - LEI
+// DEIS-ISEC 2020-2021
+//Gustavo Mateus 2020138902
+
 #ifndef PLAYER_HIST_H
 #define PLAYER_HIST_H
 

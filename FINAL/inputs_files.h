@@ -1,3 +1,7 @@
+// Trabalho Pratico Programacao - LEI
+// DEIS-ISEC 2020-2021
+//Gustavo Mateus 2020138902
+
 #ifndef INPUTS_H
 #define INPUTS_H
 
