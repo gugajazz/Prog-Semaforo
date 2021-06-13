@@ -72,19 +72,26 @@ void printTabuleiro(int **tab){
 }
 
 void PrintHistorico(struct historico *head, int num_jogadas){
+    int contador_jogadas=1;
+    printf("\n+-+-+-+-+-+-+-HISTORICO-+-+-+-+-+-+-+-+\n\n");
     while(head!=NULL && num_jogadas>0){ //tirar o comentario para so mostrar o num de jogadas pedidas
-        printf("\nCurrent player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
+        /* printf("\nCurrent player %c, ylenght=%d, xlenght=%d\n",head->current_player,head->ylenght,head->xlenght);
         printf("Table:\n");
         for(int i=0; i<head->ylenght; i++){
             for(int j=0; j<head->xlenght; j++){
                 printf("%d ",head->tabuleiro[i][j]);
             }
             printf("\n");
-        }
+        } */
+        printf("Jogada numero %d feita por %c\n",contador_jogadas,head->current_player);
+        printTabuleiro(head->tabuleiro);
+        contador_jogadas++;
         //printf("%d -> ",head->data);
         head = head->next;
         num_jogadas--;
     }
+    printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+
     //printf("NULL");
 } 
 
@@ -366,7 +373,7 @@ void Input3(struct historico* head, int *xlenght, int *ylenght, int numeroRondas
     int k,loop_ultimas;
     while(loop_ultimas){
         printf("Numero de jogadas decorridas -> %d\n",numeroRondas);
-        printf("Indique o numero de jogadas anteriores que pretende visualisar: ");
+        printf("Indique o numero de jogadas anteriores a visualisar: ");
 
         fflush(stdin);
         scanf("%d",&k);
@@ -777,7 +784,8 @@ int main(){
             ChangeCurrentPlayer();
         }
 
-        else if(ModoJogo==1){
+        else if(ModoJogo==1){ //contra um bot
+            ChangeCurrentPlayer(); //dentro dos dois changecurrentplayer o bot joga com o "B"
             char output;
             output = randomPlayer(ylenght, xlenght, tabuleiro,nAumentosA,nAumentosB,nPedrasA,nPedrasB);
             
@@ -785,6 +793,11 @@ int main(){
                 modoResize = output;
                 tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,modoResize,&nAumentosA,&nAumentosB);
             }
+
+            AdicionaAoHistorico(&head,tabuleiro);
+            playing = checkForWinner(tabuleiro);
+            ChangeCurrentPlayer();
+            numeroRondas++;
         }
 
         if(playing==0){
