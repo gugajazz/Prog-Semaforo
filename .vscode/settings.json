@@ -4,6 +4,8 @@
         "main.c": "c",
         "MAIN.C": "c",
         "stdlib.h": "c",
-        "inputs.h": "c"
+        "inputs.h": "c",
+        "structs.h": "c",
+        "tabuleiro.h": "c"
     }
 }
