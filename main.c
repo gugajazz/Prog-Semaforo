@@ -567,12 +567,21 @@ void read_bin(int ylenght, int xlenght){
         for(;temp[i]!='X';i++){}
         printf("ate proximo X:%d\n\n",i); //tamanho da string até ao proximo X (uma jogada)
         
-        int my_ylenght=posJ+3;
-        printf("antes:%d\n",my_ylenght);
+        int my_ylenght=posJ+3;//numero de numeros ate ao proximo x
+        //printf("antes:%d\n",my_ylenght);
         for(;temp[my_ylenght]!='K';my_ylenght++){}
         my_ylenght-=posJ+3;
         printf("my_ylenght:%d\n\n",my_ylenght); //tamanho da string até ao proximo X (uma jogada)
-  
+    
+        int num_ks=0;
+        int my_xlenght=posJ+3; //numero de k do inicio ate ao x (altura/numero de linhas)
+        for(;temp[my_xlenght]!='X';my_xlenght++){
+            if(temp[my_xlenght]=='K'){
+                num_ks++;
+            }
+        }
+        my_xlenght=num_ks;
+        printf("my_xlenght:%d\n\n",my_xlenght);
 
         (recuperado+pos_lista)->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
         if (recuperado->tabuleiro!=NULL){
@@ -798,7 +807,7 @@ int main(){
     AdicionaAoHistorico(&head,current_player,ylenght,xlenght,tabuleiro);
 
     tabuleiro = ResizeTabuleiro(&ylenght,&xlenght,tabuleiro,'C',current_player,&nAumentosA,&nAumentosB);
-    
+
     changeTabuleiro(tabuleiro,0,1,0,current_player,&nPedrasA,&nPedrasB);
     changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
     changeTabuleiro(tabuleiro,0,2,0,current_player,&nPedrasA,&nPedrasB);
