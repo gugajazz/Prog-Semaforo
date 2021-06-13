@@ -542,7 +542,7 @@ void write_bin(struct historico *head){
     fclose (fp);
 }
 
-void read_bin(int ylenght, int xlenght){
+void read_bin(){
 
     FILE *fp = fopen("jogo.bin", "rb");
 
@@ -558,6 +558,8 @@ void read_bin(int ylenght, int xlenght){
 
     struct historico *(recuperado) = (struct historico*) malloc(sizeof(struct historico));
 
+    int my_ylenght, my_xlenght;
+
     int i=0, pos_lista=0;
     for(;temp[i]!='Z';i=i+1,pos_lista+=2){ //pos_lista mais dois pq deve haver um problema c a aloc de memoria e assim nao como o outro tabuleiro
 
@@ -567,14 +569,14 @@ void read_bin(int ylenght, int xlenght){
         for(;temp[i]!='X';i++){}
         printf("ate proximo X:%d\n\n",i); //tamanho da string até ao proximo X (uma jogada)
         
-        int my_ylenght=posJ+3;//numero de numeros ate ao proximo x
+        my_ylenght=posJ+3;//numero de numeros ate ao proximo x
         //printf("antes:%d\n",my_ylenght);
         for(;temp[my_ylenght]!='K';my_ylenght++){}
         my_ylenght-=posJ+3;
         printf("my_ylenght:%d\n\n",my_ylenght); //tamanho da string até ao proximo X (uma jogada)
     
         int num_ks=0;
-        int my_xlenght=posJ+3; //numero de k do inicio ate ao x (altura/numero de linhas)
+        my_xlenght=posJ+3; //numero de k do inicio ate ao x (altura/numero de linhas)
         for(;temp[my_xlenght]!='X';my_xlenght++){
             if(temp[my_xlenght]=='K'){
                 num_ks++;
@@ -583,10 +585,13 @@ void read_bin(int ylenght, int xlenght){
         my_xlenght=num_ks;
         printf("my_xlenght:%d\n\n",my_xlenght);
 
-        (recuperado+pos_lista)->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
+
+        //--------------------------------------------------------
+
+        (recuperado+pos_lista)->tabuleiro = (int**)malloc(sizeof(int*)*my_ylenght);
         if (recuperado->tabuleiro!=NULL){
-            for (int i = 0; i<ylenght; i++){
-                (recuperado+pos_lista)->tabuleiro[i] = (int*)malloc(sizeof(int)*xlenght);
+            for (int i = 0; i<my_ylenght; i++){
+                (recuperado+pos_lista)->tabuleiro[i] = (int*)malloc(sizeof(int)*my_xlenght);
             }
         }
         else{
@@ -620,22 +625,14 @@ void read_bin(int ylenght, int xlenght){
         }
     }
 
-    
-    printf("\n\n-------------------\n");
-        for(int i=0;i<5;i++){
-            for(int j=0;j<4;j++){
-                printf("%d ",(recuperado+0)->tabuleiro[i][j]);
-            }
-            printf("\n");
-    }
 
-    printf("\n\n");
-        for(int i=0;i<5;i++){
-            for(int j=0;j<4;j++){
+    /* printf("\n\n");
+        for(int i=0;i<my_ylenght;i++){
+            for(int j=0;j<my_xlenght;j++){
                 printf("%d ",(recuperado+2)->tabuleiro[i][j]);
             }
             printf("\n");
-    }
+    } */
 
     /* FromFile->current_player = temp[0];
     FromFile->ylenght = temp[1] - '0'; // char - '0' resulta no int correspondente
