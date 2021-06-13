@@ -566,8 +566,13 @@ void read_bin(int ylenght, int xlenght){
 
         for(;temp[i]!='X';i++){}
         printf("ate proximo X:%d\n\n",i); //tamanho da string até ao proximo X (uma jogada)
-
-        //int ylenght=   
+        
+        int my_ylenght=posJ+3;
+        printf("antes:%d\n",my_ylenght);
+        for(;temp[my_ylenght]!='K';my_ylenght++){}
+        my_ylenght-=posJ+3;
+        printf("my_ylenght:%d\n\n",my_ylenght); //tamanho da string até ao proximo X (uma jogada)
+  
 
         (recuperado+pos_lista)->tabuleiro = (int**)malloc(sizeof(int*)*ylenght);
         if (recuperado->tabuleiro!=NULL){
