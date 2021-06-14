@@ -8,6 +8,7 @@
 #include "structs.h"
 #include "tabuleiro.h"
 #include "inputs_files.h"
+#include "utils.h"
 
 void AdicionaAoHistorico(struct historico** head, int **tabela_atual);
 

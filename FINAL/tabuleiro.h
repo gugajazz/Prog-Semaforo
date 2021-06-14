@@ -6,6 +6,9 @@
 #define TABULEIRO_H
 
 #include "structs.h"
+#include "inputs_files.h"
+#include "utils.h"
+#include "player_hist.h"
 
 void InicializaTabuleiro(int **tab);
 

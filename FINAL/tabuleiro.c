@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include "tabuleiro.h"
 #include "utils.h"
+#include "inputs_files.h"
+#include "structs.h"
+#include "player_hist.h"
 
 
 void printTabuleiro(int **tab, int ylenght, int xlenght){ //tem q ter ylenght e xlenght pq é usada par printhistorico e ele usa head->ylenght

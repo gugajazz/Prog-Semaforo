@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include "player_hist.h"
 #include "utils.h"
+#include "inputs_files.h"
+#include "tabuleiro.h"
+#include "structs.h"
+
 
 
 void ChangeCurrentPlayer(){
