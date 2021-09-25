@@ -1,5 +1,5 @@
 # Prog Semaforo
-## _A C game built for my programing course._
+## _A C board game built for my programing course._
 
 If you are interested in a more detailed description please refere to my report, present in the following file ```Relatorio Prog.pdf```
 
