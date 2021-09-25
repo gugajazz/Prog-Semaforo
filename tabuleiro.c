@@ -164,6 +164,32 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, int
     }
 }
 
+int **aumentaColuna(int *ylenght ,int *xlenght,int **tabuleiro, int *nAumentosA, int *nAumentosB){
+    for(int i=0;i<(*ylenght);i++){
+            tabuleiro[i] = realloc( tabuleiro[i], sizeof(int) * ((*xlenght)+1) );
+
+            if(tabuleiro[0]==NULL){
+                printf("ERRO NA ALOCACAO DE MEMORIA X%d\n",i);
+                return NULL;
+            }
+    }
+
+    for(int i=0;i<(*ylenght);i++){
+        int j=(*xlenght);
+        tabuleiro[i][j]=0;
+    }
+
+    (*xlenght)++;
+    if(jg.current_player=='A'){
+        (*nAumentosA)++;
+    }
+    else if(jg.current_player=='B'){
+        (*nAumentosB)++;
+    }
+    
+    return tabuleiro;
+}
+
 void InicializaTabuleiro(int **tab){
     for(int i=0;i<jg.ylenght;i++){
         for(int j=0;j<jg.xlenght;j++){

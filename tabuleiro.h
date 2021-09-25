@@ -18,4 +18,6 @@ int **ResizeTabuleiro(int *ylenght ,int *xlenght,int **tabuleiro, char mode, int
 
 void printTabuleiro(int **tab, int ylenght, int xlenght);
 
+int **aumentaColuna(int *ylenght ,int *xlenght,int **tabuleiro, int *nAumentosA, int *nAumentosB);
+
 #endif

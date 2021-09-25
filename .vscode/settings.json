@@ -6,6 +6,7 @@
         "stdlib.h": "c",
         "inputs.h": "c",
         "structs.h": "c",
-        "tabuleiro.h": "c"
+        "tabuleiro.h": "c",
+        "inputs_files.h": "c"
     }
 }
